@@ -1,0 +1,36 @@
+GET: http://localhost:3000/api/members/test
+
+POST: http://localhost:3000/api/members/apply
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "awesomedog1738@gmail.com",
+  "phone": "1234567898",
+  "response": "sample response. This is a test"
+}
+
+POST: http://localhost:3000/api/events
+
+{
+  "title": "Testing Title",
+  "description": "Lorum ipsom test test test",
+  "date": "2025-12-01T19:00:00Z",
+  "location": "Some Place",
+  "type": "fundraiser",
+  "ticketPrice": 15.99,
+  "maxAttendees": 50
+}
+
+PUT: http://localhost:3000/api/events/4
+
+you dont have to update everything but i just did 
+
+{
+  "title": "Updated Title",
+  "description": "Lorum ipsom updated test",
+  "location": "Some New Place",
+  "type": "fundraiser",
+  "ticketPrice": 25.99,
+  "maxAttendees": 150
+}
