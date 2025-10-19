@@ -10,6 +10,8 @@ POST: http://localhost:3000/api/members/apply
   "response": "sample response. This is a test"
 }
 
+//events are Protected meaning you need to add a jwt token in the auth header for httpie
+
 POST: http://localhost:3000/api/events
 
 {
@@ -22,7 +24,7 @@ POST: http://localhost:3000/api/events
   "maxAttendees": 50
 }
 
-PUT: http://localhost:3000/api/events/4
+PUT: http://localhost:3000/api/events/id
 
 you dont have to update everything but i just did 
 
@@ -35,6 +37,9 @@ you dont have to update everything but i just did
   "maxAttendees": 150
 }
 
+DELETE: http://localhost:3000/api/events/id
+
+
 POST: http://localhost:3000/api/scholarship/apply
 
 makesure that body is form. and is multipart 
@@ -44,3 +49,13 @@ lastName
 email
 documents
 
+//login not protected as this is what gives the jwt token
+POST: http://localhost:3000/api/auth/login
+
+{
+  "email": <email>,
+  "password": <password>
+}
+
+//is protected
+POST: http://localhost:3000/api/auth/logout
