@@ -1,3 +1,5 @@
+import "@fontsource/playfair-display";
+import "@fontsource/montserrat";
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
