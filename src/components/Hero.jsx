@@ -7,20 +7,17 @@ export default function Hero() {
       id="home"
       className="relative h-screen flex items-center justify-center text-center text-white px-4 overflow-hidden"
     >
-      {/* Base color/gradient that will show through as the photo fades out */}
-      <div className="absolute inset-0 bg-gradient-to-b from-yellow-600 via-yellow-700 to-red-900" />
-
-      {/* Background Image with a vertical transparency mask (opaque -> transparent) */}
+      {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover pointer-events-none"
+        className="absolute inset-0 bg-cover"
         style={{
           backgroundImage: "url('/src/assets/zonta-women.png')",
-          backgroundPosition: "center 80px",            // your requested position
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 25%, transparent 85%)",
-          maskImage: "linear-gradient(to bottom, black 0%, black 25%, transparent 85%)",
-          // tweak stops: the 25% keeps the top fully visible longer; 85% controls where it finishes fading
+          backgroundPosition: "center 80px", // move image focus upward
         }}
-      />
+      ></div>
+
+      {/* Gradient Overlay (fades down) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-yellow-600/80 via-yellow-700/70 to-red-900/90"></div>
 
       {/* Content */}
       <motion.div
@@ -41,7 +38,8 @@ export default function Hero() {
           Empowering Women, Changing Lives
         </h2>
         <p className="text-xl mb-8">
-          Zonta Club of Naples is dedicated to advancing the status of women through service and advocacy.
+          Zonta Club of Naples is dedicated to advancing the status of women
+          through service and advocacy.
         </p>
         <div className="space-x-4">
           <button className="bg-white text-yellow-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-100">
