@@ -34,3 +34,13 @@ you dont have to update everything but i just did
   "ticketPrice": 25.99,
   "maxAttendees": 150
 }
+
+POST: http://localhost:3000/api/scholarship/apply
+
+makesure that body is form. and is multipart 
+
+firstName 
+lastName
+email
+documents
+

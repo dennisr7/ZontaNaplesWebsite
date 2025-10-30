@@ -30,7 +30,7 @@ export const submitMembershipApplication = async (req, res, next) => {
             firstName: firstName.trim(),
             lastName: lastName.trim(),
             email: email.trim().toLowerCase(),
-            phone: phone ? phone.trim() : '',
+            phone: phone ? phone.trim() : null,
             response: response.trim()
         };
 
