@@ -4,6 +4,7 @@ import Hero from "./components/Hero.jsx";
 import Mission from "./components/Mission.jsx";
 import Facebook from "./components/Facebook.jsx";
 import Zonta100Years from "./components/Zonta100years.jsx";
+import GoogleMaps from "./components/GoogleMaps.jsx";
 import Sponsors from "./components/Sponsors.jsx";
 import Events from "./components/Events.jsx";
 import CallToAction from "./components/CallToAction.jsx";
@@ -18,6 +19,7 @@ export default function App() {
       <Zonta100Years />
       <Events />
       <Facebook />
+      <GoogleMaps />
       <Sponsors />
       <CallToAction />
       <Footer />

@@ -5,7 +5,7 @@ export default function Mission() {
   return (
     <section id="about" className="py-20 max-w-6xl mx-auto text-center px-6">
       <motion.h3
-        className="text-3xl font-bold text-yellow-800 mb-6"
+        className="text-3xl font-bold text-red-800 mb-6"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
