@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import memberRoutes from './src/routes/members.js';
+import eventRoutes from './src/routes/events.js';
+import scholarshipRoutes from './src/routes/scholarship.js';
+import authRoutes from './src/routes/auth.js';
 
 
 const app = express();
@@ -43,6 +46,12 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/members', memberRoutes);
+
+app.use('/api/events', eventRoutes);
+
+app.use('/api/scholarship', scholarshipRoutes);
+
+app.use('/api/auth', authRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ 
