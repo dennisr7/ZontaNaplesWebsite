@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import memberRoutes from './src/routes/members.js';
 import eventRoutes from './src/routes/events.js';
-import scholarshipRoutes from './src/routes/scholarship.js';
+import scholarshipRoutes from './src/routes/scholarships.js';
 import authRoutes from './src/routes/auth.js';
+import { connectDB } from './src/config/database.js';
 
-
+connectDB();
 const app = express();
 
 const corsOptions = {
@@ -75,10 +76,38 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log(`Email configured: ${process.env.EMAIL_USER}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+const gracefulShutdown = async (signal) => {
+    console.log(`Received ${signal}. Closing server...`);
+    server.close(() => {
+        console.log('Server closed.');
+        process.exit(0);
+    })
+
+    setTimeout(() => {
+        console.error('Forcing server shutdown...');
+        process.exit(1);
+    }, 10000);
+};
+
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM')); //signal termination
+process.on('SIGINT', () => gracefulShutdown('SIGINT')); //signal interrupt (Ctrl+C)
+
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    process.exit(1);
 });
 
 export default app;

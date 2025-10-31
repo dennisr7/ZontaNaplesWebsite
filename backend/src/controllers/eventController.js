@@ -1,22 +1,25 @@
-import {
-    createEvent,
-    getAllEvents,
-    getEventById,
-    updateEvent,
-    deleteEvent,
-    validateEventData,
-    EVENT_TYPES
-} from '../models/event.js';
+import Event from '../models/event.js';
+import { EVENT_TYPES } from '../models/event.js';
 
-export const getEvents = (req, res, next) => {
+
+export const getEvents = async (req, res, next) => {
     try {
         const { type, upcoming } = req.query;
         
-        const filters = {};
-        if(type) filters.type = type; //if a type is provided, add it to filters. since its small we did not use a function body
-        if(upcoming) filters.upcoming = upcoming;
+        //a isActive means that the even is not cancelled or deleted
+        const query = { isActive: true };
 
-        const events = getAllEvents(filters);
+        //basically if the type given is one of the valid event types. This will be a dropdown so it should be fine
+        if(type && Object.values(EVENT_TYPES).includes(type)) {
+            query.type = type;
+        }
+
+        if(upcoming === 'true') {
+            query.date = { $gte: new Date() }; // remember that $gte means greater than or equal to
+        }
+
+        //just remember that await means we are waiting for a promise to resolve where the promise was the database operation
+        const events = await Event.find(query).sort({ date: 1 }).select('-__v'); //sort by date ascending and exclude __v field
 
         res.json({
             success: true, 
@@ -25,6 +28,7 @@ export const getEvents = (req, res, next) => {
         });
 
         console.log(`${events.length} events retrieved`);
+
     } catch (error) {
         console.error('Error retrieving events:', error);
         next(error);
@@ -32,16 +36,15 @@ export const getEvents = (req, res, next) => {
 };   
 
 
-export const getEvent = (req, res, next) => {
+export const getEvent = async (req, res, next) => {
     try {
         //in the api route we defined :id as a route parameter
-        const { id } = req.params;
-        const event = getEventById(id);
+        const event = await Event.findById(req.params.id);
 
         if(!event) {
             return res.status(404).json({
                 success: false,
-                error: `Event with ID: ${id} not found`
+                error: `Event not found`
             });
         }
         
@@ -50,96 +53,107 @@ export const getEvent = (req, res, next) => {
             data: event
         });
 
-        console.log(`Event with ID: ${id} retrieved`);
+        console.log(`Event ${event.title} retrieved`);
     } catch(error) {
+        // we are looking for a cast error because it indicates that the id format was invalid
+        if(error.name === 'CastError') {
+            return res.status(400).json({
+                success: false,
+                error: 'Event not found'
+            });
+        }
         console.error('Error retrieving event:', error);
         next(error);
     }
 }
 
-export const createNewEvent = (req, res, next) => {
+export const createNewEvent = async (req, res, next) => {
     try {
-        const eventData = req.body;
+        const eventData = { ...req.body,
+             createdBy: req.admin?.email || 'admin'
+         };
 
-        const validation = validateEventData(eventData);
-        if(!validation.valid) {
-            return res.status(400).json({
-                success: false,
-                error: 'Validation failed',
-                errors: validation.errors
-            });
-        }
+         const event = await Event.create(eventData);
 
-        const newEvent = createEvent(eventData);
         res.status(201).json({
             success: true, 
             message: 'Event created successfully',
-            data: newEvent
+            data: event
         });
 
-        console.log(`New event created with ID: ${newEvent.id}`);
+        console.log(`New event titled: ${event.title}`);
     } catch (error) {
+        if(error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({
+                success: false,
+                error: 'Validation failed',
+                errors: errors
+            });
+        }
         console.error('Error creating event:', error);
         next(error);
     }
 }
 
-export const updateExistingEvent = (req, res, next) => {
+export const updateExistingEvent = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const updateData = req.body;
-        
-        const existingEvent = getEventById(id);
-        if(!existingEvent) {
+        const event = await Event.findById(req.params.id);
+
+        if(!event) {
             return res.status(404).json({
                 success: false,
-                error: `Event with ID: ${id} not found`
+                error: `Event not found`
             });
         }
 
-        const updatedData = { ...existingEvent, ...updateData };
-        const validation = validateEventData(updatedData);
-        if(!validation.valid) {
+        Object.keys(req.body).forEach(key => {
+            event[key] = req.body[key];
+        });
+
+        await event.save();
+
+        res.json({
+            success: true, 
+            messsage: 'Event updated successfully',
+            data: event
+        });
+
+        console.log(`Updated event: ${event.title}`);
+    } catch (error) {
+        if(error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({
                 success: false,
                 error: 'Validation failed',
-                errors: validation.errors
+                errors: errors
             });
         }
 
-        const updatedEvent = updateEvent(id, updateData);
-        res.json({
-            success: true,
-            messsage: 'Event updated successfully',
-            data: updatedEvent
-        });
-        console.log(`Event with ID: ${id} updated`);
-    } catch (error) {
         console.error('Error updating event:', error);
         next(error);
     }
 }
 
-export const deleteExistingEvent = (req, res, next) => {
+export const deleteExistingEvent = async (req, res, next) => {
     try {
-        const { id } = req.params;
-
-        const existingEvent = getEventById(id);
-        if(!existingEvent) {
+        const event = await Event.findById(req.params.id);
+        if(!event) {
             return res.status(404).json({
                 success: false,
-                error: `Event with ID: ${id} not found`
+                error: `Event not found`
             });
         }
 
-        const deleted = deleteEvent(id);
-        if(deleted) {
-            res.json({
-                success: true,
-                message: 'Event deleted successfully'
-            });
-        }
-        console.log(`Event with ID: ${id} deleted`);
+        await event.deleteOne();
+        // do we need to save after deleteOne? 
+
+        res.json({
+            success: true,
+            messsage: 'Event deleted successfully'
+        });
+
+        console.log(`Deleted event: ${event.title}`);
     } catch (error) {
         console.error('Error deleting event:', error);
         next(error);

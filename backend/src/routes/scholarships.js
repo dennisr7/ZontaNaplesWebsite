@@ -1,5 +1,13 @@
 import express from 'express';
-import  { submitScholarshipApplication, testScholarshipEndpoint, downloadScholarshipForm } from '../controllers/scholarshipController.js';
+import  { 
+    submitScholarshipApplication, 
+    getAllScholarships,
+    getScholarship,
+    updateScholarship,
+    downloadScholarshipForm,
+    testScholarshipEndpoint, 
+ } from '../controllers/scholarshipController.js';
+
 import { uploadScholarshipDocs, handleMulterErr } from '../middleware/fileUpload.js';
 
 const router = express.Router();
@@ -10,6 +18,11 @@ router.get('/download-form', downloadScholarshipForm);
 //handleMulterErr middleware handles multer specific errors
 //submitScholarshipApplication is the main controller function
 router.post('/apply', uploadScholarshipDocs, handleMulterErr, submitScholarshipApplication);
+
+//protected admin only routes
+router.get('/', getAllScholarships);
+router.get('/:id', getScholarship);
+router.put('/:id', updateScholarship);
 
 
 export default router;

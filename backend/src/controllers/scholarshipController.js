@@ -1,8 +1,11 @@
 import { sendScholarshipApplicationEmail } from '../utils/emailService.js';
+import Scholarship from '../models/scholarship.js';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
+import { error } from 'console';
 
+//filename and dirname help to get the current directory of this file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -10,81 +13,190 @@ export const submitScholarshipApplication = async (req, res, next) => {
     try {
         const { firstName, lastName, email, phone} = req.body;
 
+        // uploaded files are accessed
         const files = req.files || [];
 
-        const errors = [];
-
-        if(!firstName || firstName.trim().length < 2) {
-            errors.push('First name must be at least 2 characters long.');
-        }
-
-        if(!lastName || lastName.trim().length < 2) {
-            errors.push('Last name must be at least 2 characters long.');
-        };
-
-        if(!email || email.trim().length === 0) {
-            errors.push('Email is required.');
-        } else {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(!emailRegex.test(email)) {
-                errors.push('Invalid email format.');
-            }
-        }
-
         if(files.length === 0) {
-            errors.push('At least one document must be uploaded.');
+            return res.status(400).json({
+                success: false,
+                error: 'At least one file (transcript or recommendation letter) must be uploaded.'
+            });
         }
 
-        if(errors.length > 0) {
-            //delete uploaded files if validation fails
+        const existingApp = await Scholarship.findOne({ email: email.toLowerCase() });
+        if(existingApp) {
             files.forEach(file => {
                 fs.unlink(file.path, (err) => {
-                    if(err) {
-                        console.error('Error deleting file:', file.path, err);
-                    }
+                   if(err) console.error('Error deleting uploaded file:', err); 
                 });
             });
 
             return res.status(400).json({
-                success: false,
-                error: 'Validation failed',
-                errors: errors
+                success: false, 
+                error: 'An application with this email already exists.'
             });
         }
 
-        const applicationData = {
+        const documents = files.map(file => ({
+            originalName: file.originalName,
+            filename: file.filename,
+            path: file.path,
+            size: file.size,
+            mimetype: file.mimetype
+        }))
+
+        const scholarship = await Scholarship.create({
             firstName: firstName.trim(),
             lastName: lastName.trim(),
             email: email.trim().toLowerCase(),
             phone: phone ? phone.trim() : null,
+            documents: documents
+        })
+
+        const applicationData = {
+            firstName: scholarship.firstName,
+            lastName: scholarship.lastName,
+            email: scholarship.email,
+            phone: scholarship.phone
         };
 
-
+        //files are passed instead of documents to avoid sending internal paths
         await sendScholarshipApplicationEmail(applicationData, files);
 
         res.status(201).json({
             success: true,
             message: 'Scholarship application submitted successfully.',
             data: {
-                applicantName: `${applicationData.firstName} ${applicationData.lastName}`,
-                applicantEmail: applicationData.email,
-                submittedAt: new Date().toISOString()
+                id: scholarship._id,
+                applicantName: scholarship.fullName,
+                applicantEmail: scholarship.email,
+                submittedAt: scholarship.submittedAt
             }
         });
 
-        console.log(`Scholarship application submitted: ${applicationData.email}`);
+        console.log(`Scholarship application submitted: ${applicationData.email} (${files.length} files uploaded)`);
     } catch (error) {
+        if(error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map(err => err.message);
+
+            //check if files were uploaded
+            if(req.files) {
+                //delete each uploaded file
+                req.files.forEach(file => {
+                    //if file exists, delete it
+                    fs.unlink(file.path, (err) => {
+                       if(err) console.error('Error deleting uploaded file:', err); 
+                    });
+                });
+            }
+
+            return res.status(400).json({
+                success: false,
+                error: 'Validation Error',
+                errors: errors
+            });
+        }
+
         console.error('Error submitting scholarship application:', error);
+
+        //we do this again to clean up any uploaded files in case of other errors
+        if(req.files) {
+            req.files.forEach(file => {
+                fs.unlink(file.path, (err) => {
+                   if(err) console.error('Error deleting uploaded file:', err); 
+                });
+            });
+        }
 
         next(error);
     }
 };
 
+export const getAllScholarships = async (req, res, next) => {
+    try {
+        const { status } = req.query;
+        
+        const query = {};
+        if(status) {
+            query.status = status;
+        }
+
+        const scholarships = await Scholarship.find(query).sort({ submittedAt: -1 }).select('-documents.path -__v');
+
+        res.json({
+            success: true,
+            count: scholarships.length,
+            data: scholarships
+        });
+    } catch (error) {
+        console.error('Error fetching scholarships:', error);
+        next(error);
+    }
+}
+
+export const getScholarship = async (req, res, next) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+
+        if(!scholarship) {
+            return res.status(404).json({
+                success: false,
+                error: 'Scholarship application not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            data: scholarship
+        });
+    } catch(error) {
+        if(error.name === 'CastError') {
+            return res.status(404).json({
+                success: false,
+                error: 'Scholarship application not found'
+            });
+        }
+
+        console.error('Error fetching scholarship application:', error);
+        next(error);
+    }
+}
+
+export const updateScholarship = async (req, res, next) => {
+    try {
+        const { status, notes } = req.body;
+        const scholarship = await Scholarship.findById(req.params.id);
+
+        if(!scholarship) {
+            return res.status(404).json({
+                success: false,
+                error: 'Scholarship application not found'
+            });
+        }
+
+        if(status) scholarship.status = status;
+        if(notes !== undefined) scholarship.notes = notes;
+
+        await scholarship.save();
+
+        res.json({
+            success: true,
+            message: 'Scholarship application updated successfully',
+            data: scholarship
+        });
+
+        console.log(`Scholarship application updated: ${scholarship.email} - Status: ${scholarship.status}`);
+    } catch(error) {
+        console.error('Error updating scholarship application: ', error);
+        next(error);
+    }
+}
 
 export const downloadScholarshipForm = (req, res) => {
     try {
         const filePath = path.join(__dirname, '../forms/test-form.pdf');
 
+        //check if file exists
         if(!fs.existsSync(filePath)) {
             return res.status(404).json({
                 success: false, 
