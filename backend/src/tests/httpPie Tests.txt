@@ -14,6 +14,8 @@ POST: http://localhost:3000/api/members/apply
 
 POST: http://localhost:3000/api/events
 
+not sure why but there is an error that the transaction never goes through without token. Fix as should show an error when we call without token
+
 {
   "title": "Testing Title",
   "description": "Lorum ipsom test test test",
