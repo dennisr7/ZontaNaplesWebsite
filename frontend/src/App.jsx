@@ -13,7 +13,6 @@ import Footer from "./components/Footer.jsx";
 export default function App() {
   return (
     <div className="font-sans bg-white text-gray-900">
-      <Navbar />
       <Hero />
       <Mission />
       <Zonta100Years />
@@ -22,7 +21,6 @@ export default function App() {
       <GoogleMaps />
       <Sponsors />
       <CallToAction />
-      <Footer />
     </div>
   );
 }
