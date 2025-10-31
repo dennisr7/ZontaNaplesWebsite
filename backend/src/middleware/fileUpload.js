@@ -1,27 +1,21 @@
 import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary.js';
 
-//get __dirname equivalent in ES module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-// storage config
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        //callback to store files in uploads folder
-        cb(null, path.join(__dirname, '../uploads/scholarships'));
-    },
-    filename: (req, file, cb) => {
-        //this creates unique filenames for each upload
-        //bad suffix, need to fix but looks like: <originalname>-<timestamp>-<randomnumber>
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // this suffix helps avoid overwriting files
-        const ext = path.extname(file.originalname); // we need the file ext because original name may have multiple dots
-        const nameWithoutExt = path.basename(file.originalname, ext); // useful for creating a new file name
-        cb(null, `${nameWithoutExt}-${uniqueSuffix}${ext}`); // e.g., document-1632345678901-123456789.pdf
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'zonta-scholarships',
+        allowed_formats: ['pdf', 'doc', 'docx'],
+        resource_type: 'raw', //allows for non image files
+        public_id: (req, file) => {
+            const timestamp = Date.now();
+            const originalName = file.originalname.replace(/\.[^/.]+$/, ''); //removes file extension
+            return `${originalName}-${timestamp}`;
+        }
     }
-});
-
+})
 
 // filter restricts the types of files that can be uploaded. So only pdf, doc, docx
 const fileFilter = (req, file, cb) => {
