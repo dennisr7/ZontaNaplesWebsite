@@ -8,6 +8,9 @@ import "./index.css";
 import RootLayout from "./layouts/RootLayout.jsx";
 import App from "./App.jsx";                // Home sections
 import Contact from "./pages/Contact.jsx";  // Contact page
+import Donation from "./pages/Donation.jsx"; // Donation page
+import ZontaCentennial from "./pages/ZontaCentennial.jsx"; //Zonta100Years page
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,6 +19,8 @@ createRoot(document.getElementById("root")).render(
         <Route element={<RootLayout />}>
           <Route path="/" element={<App />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/donate" element={<Donation />} />
+          <Route path="/centennial" element={<ZontaCentennial />} />
         </Route>
       </Routes>
     </BrowserRouter>

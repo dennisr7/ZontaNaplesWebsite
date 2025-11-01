@@ -1,9 +1,13 @@
 // src/components/Navbar.jsx
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ backgroundColor = 'default' }) {
   return (
-    <nav className="fixed top-0 left-0 w-full bg-yellow-600 border-b border-white z-50">
+    <nav className={`fixed top-0 left-0 w-full border-b border-white z-50 ${
+      backgroundColor === 'blue' 
+        ? 'bg-[#6EC1E4]' 
+        : 'bg-yellow-600'
+    }`}>
       <div className="w-full flex justify-between items-center px-20 py-4">
         {/* Logo -> Home route */}
         <Link to="/">
@@ -34,4 +38,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
