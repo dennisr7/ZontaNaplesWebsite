@@ -71,6 +71,17 @@ export default function Navbar({ backgroundColor = 'default' }) {
             </a>
           </li>
 
+          {/* FAQ page link */}
+          <li>
+            <Link
+              to="/faq"
+              onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
+            >
+              FAQ
+            </Link>
+          </li>
+
           {/* Contact page link */}
           <li>
             <Link

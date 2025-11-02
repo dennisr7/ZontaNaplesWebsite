@@ -11,6 +11,7 @@ import Contact from "./pages/Contact.jsx";  // Contact page
 import Donation from "./pages/Donation.jsx"; // Donation page
 import ZontaCentennial from "./pages/ZontaCentennial.jsx"; //Zonta100Years page
 import Membership from "./pages/Membership.jsx"; 
+import FAQ from "./pages/FAQ.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/donate" element={<Donation />} />
           <Route path="/centennial" element={<ZontaCentennial />} />
           <Route path="/membership" element={<Membership />} />
+          <Route path="/faq" element={<FAQ />} />
         </Route>
       </Routes>
     </BrowserRouter>

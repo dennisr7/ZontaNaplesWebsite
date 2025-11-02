@@ -17,6 +17,8 @@ export default function RootLayout() {
         return { navbar: "default", footer: "red" }; 
       case "/membership":
         return { navbar: "default", footer: "red" };
+      case "/faq":
+        return { navbar: "default", footer: "red" };
       default: // Home page
         return { navbar: "default", footer: "default" };
     }
