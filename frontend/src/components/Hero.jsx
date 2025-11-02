@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";   // ✅ add this
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -43,11 +43,15 @@ export default function Hero() {
         </p>
 
         <div className="space-x-4">
-          <button className="bg-white text-yellow-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-100">
+          {/* ✅ Updated Join Us button */}
+          <Link
+            to="/membership"
+            className="inline-block bg-white text-yellow-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-100 transition"
+          >
             Join Us
-          </button>
+          </Link>
 
-          {/* ✅ Updated Donate button */}
+          {/* ✅ Donate button */}
           <Link
             to="/donate"
             className="inline-block bg-yellow-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-700 transition"

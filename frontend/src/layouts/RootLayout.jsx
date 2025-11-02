@@ -14,7 +14,9 @@ export default function RootLayout() {
       case "/donate":
         return { navbar: "default", footer: "red" };
       case "/contact":
-        return { navbar: "default", footer: "red" }; // Add this line for contact page
+        return { navbar: "default", footer: "red" }; 
+      case "/membership":
+        return { navbar: "default", footer: "red" };
       default: // Home page
         return { navbar: "default", footer: "default" };
     }
