@@ -2,6 +2,24 @@
 import { Link } from "react-router-dom";
 
 export default function Navbar({ backgroundColor = 'default' }) {
+  // Function to handle scroll to top
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
+  // Function to handle home link with hash
+  const handleHomeClick = (e) => {
+    e.preventDefault();
+    if (window.location.pathname === '/') {
+      // Already on home page, scroll to top
+      window.scrollTo(0, 0);
+    } else {
+      // Navigate to home and scroll to top
+      window.scrollTo(0, 0);
+      window.location.href = '/#home';
+    }
+  };
+
   return (
     <nav className={`fixed top-0 left-0 w-full border-b border-white z-50 ${
       backgroundColor === 'blue' 
@@ -10,7 +28,10 @@ export default function Navbar({ backgroundColor = 'default' }) {
     }`}>
       <div className="w-full flex justify-between items-center px-20 py-4">
         {/* Logo -> Home route */}
-        <Link to="/">
+        <Link 
+          to="/" 
+          onClick={scrollToTop}
+        >
           <img
             src="/src/assets/zonta-logo.png"
             alt="Zonta Club of Naples logo"
@@ -19,15 +40,42 @@ export default function Navbar({ backgroundColor = 'default' }) {
         </Link>
 
         <ul className="hidden md:flex space-x-8 text-[18px] font-[Playfair_Display] font-medium text-white">
-          {/* Anchors into the Home page sections */}
-          <li><a href="/#home" className="hover:text-yellow-700">HOME</a></li>
-          <li><a className="hover:text-yellow-700">SERVICE</a></li>
-          <li><a className="hover:text-yellow-700">ADVOCACY</a></li>
+          {/* Home link with scroll to top */}
+          <li>
+            <a 
+              href="/#home" 
+              className="hover:text-yellow-700"
+              onClick={handleHomeClick}
+            >
+              HOME
+            </a>
+          </li>
+          
+          {/* Service link - placeholder for now */}
+          <li>
+            <a 
+              className="hover:text-yellow-700 cursor-pointer"
+              onClick={scrollToTop}
+            >
+              SERVICE
+            </a>
+          </li>
+          
+          {/* Advocacy link - placeholder for now */}
+          <li>
+            <a 
+              className="hover:text-yellow-700 cursor-pointer"
+              onClick={scrollToTop}
+            >
+              ADVOCACY
+            </a>
+          </li>
 
-          {/* Real page route */}
+          {/* Contact page link */}
           <li>
             <Link
               to="/contact"
+              onClick={scrollToTop}
               className="border border-white px-4 py-3 rounded-sm hover:bg-white hover:text-yellow-700 transition"
             >
               CONTACT
