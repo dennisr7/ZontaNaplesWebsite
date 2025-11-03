@@ -24,6 +24,8 @@ export default function Navbar({ backgroundColor = 'default' }) {
     <nav className={`fixed top-0 left-0 w-full border-b border-white z-50 ${
       backgroundColor === 'blue' 
         ? 'bg-[#6EC1E4]' 
+        : backgroundColor === 'red' 
+        ? 'bg-[rgb(140,50,50)]' // Changed to /90 to match Impact page
         : 'bg-yellow-600'
     }`}>
       <div className="w-full flex justify-between items-center px-20 py-4">
@@ -51,24 +53,26 @@ export default function Navbar({ backgroundColor = 'default' }) {
             </a>
           </li>
           
-          {/* Service link - placeholder for now */}
+          {/* Impact page link */}
           <li>
-            <a 
-              className="hover:text-yellow-700 cursor-pointer"
+            <Link
+              to="/impact"
               onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
             >
-              SERVICE
-            </a>
+              IMPACT
+            </Link>
           </li>
-          
-          {/* Advocacy link - placeholder for now */}
+
+          {/* Membership page link */}
           <li>
-            <a 
-              className="hover:text-yellow-700 cursor-pointer"
+            <Link
+              to="/membership"
               onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
             >
-              ADVOCACY
-            </a>
+              MEMBERSHIP
+            </Link>
           </li>
 
           {/* FAQ page link */}

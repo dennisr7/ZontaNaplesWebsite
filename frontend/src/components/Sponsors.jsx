@@ -1,7 +1,7 @@
 // src/components/Sponsor.jsx
 export default function Sponsor() {
   return (
-    <section className="bg-red-800 py-16 text-center">
+    <section className="bg-red-800/90 py-16 text-center">
       <h3 className="text-3xl font-bold text-white mb-10">
         Zonta Club of Naples supports these proud sponsors!
       </h3>

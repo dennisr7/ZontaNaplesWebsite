@@ -8,7 +8,7 @@ export default function Footer({ backgroundColor = 'default' }) {
         // Exact glassy red from donation page bottom (red-900/90)
         return 'bg-red-900/90 backdrop-blur-md m-0 border-0';
       default: // yellow
-        return 'bg-yellow-600';
+        return 'bg-yellow-600/90 backdrop-blur-md m-0 border-0'; // Added /90 and backdrop-blur
     }
   };
 
