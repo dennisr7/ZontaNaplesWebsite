@@ -13,10 +13,19 @@ import ZontaCentennial from "./pages/ZontaCentennial.jsx"; //Zonta100Years page
 import Membership from "./pages/Membership.jsx"; 
 import FAQ from "./pages/FAQ.jsx";
 import Impact from "./pages/Impact.jsx"; // ← ADD THIS IMPORT
+import { CartProvider } from "./context/CartContext.jsx"; // ✅ Correct
+import MerchandisePage from "./pages/MerchandisePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
+
+
+
+
 
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <CartProvider>
     <BrowserRouter>
       <Routes>
         <Route element={<RootLayout />}>
@@ -27,8 +36,12 @@ createRoot(document.getElementById("root")).render(
           <Route path="/membership" element={<Membership />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/impact" element={<Impact />} /> {/* ← ADD THIS ROUTE */}
+          <Route path="/merchandise" element={<MerchandisePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
+    </CartProvider>
   </StrictMode>
 );

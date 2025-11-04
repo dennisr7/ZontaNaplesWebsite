@@ -85,6 +85,26 @@ export default function Navbar({ backgroundColor = 'default' }) {
               FAQ
             </Link>
           </li>
+          {/*Merchandise page */}
+          <li>
+            <Link
+              to="/merchandise"
+              onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
+            >
+              MERCHANDISE
+              </Link>
+            </li>
+            {/*Login Page */}
+          <li>
+            <Link
+              to="/login"
+              onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
+            >
+              LOGIN
+              </Link>
+          </li>
 
           {/* Contact page link */}
           <li>
