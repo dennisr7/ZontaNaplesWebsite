@@ -1,19 +1,15 @@
 // src/pages/Contact.jsx
 export default function Contact() {
   return (
-    // No Navbar here - it's handled by RootLayout
-    // Gradient background (same as Hero)
     <main className="relative min-h-screen pt-32 px-6 flex flex-col items-center text-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-yellow-600/80 via-yellow-700/70 to-red-900/90" />
 
-      {/* Content */}
       <div className="relative z-10 w-full max-w-2xl">
         <h1 className="text-4xl font-bold mb-4 text-white">Contact Zonta Club of Naples</h1>
         <p className="text-lg mb-12 text-white/90">
           Have questions or want to get involved? We'd love to hear from you. <br />You can also reach us at info@zonta-naples.org
         </p>
 
-        {/* Contact Form */}
         <form className="w-full bg-white shadow-lg rounded-2xl p-8 space-y-6 text-left">
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600 mb-1">Name</label>
@@ -47,7 +43,6 @@ export default function Contact() {
           </button>
         </form>
 
-        {/* ✅ Zonta Logo Under Form */}
         <img
           src="/src/assets/zonta-full-logo.png"
           alt="Zonta Club Full Logo"

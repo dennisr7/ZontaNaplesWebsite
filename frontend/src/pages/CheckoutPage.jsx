@@ -1,3 +1,4 @@
+// ✅ CheckoutPage.jsx
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -19,8 +20,10 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
+    <div className="max-w-6xl mx-auto px-4 pt-28 pb-16">
       <h1 className="text-3xl font-bold text-yellow-800 mb-8">Checkout</h1>
+
+
 
       {items.length === 0 ? (
         <p className="text-gray-600">Your cart is empty.</p>

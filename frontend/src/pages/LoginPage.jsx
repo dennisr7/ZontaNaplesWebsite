@@ -69,7 +69,7 @@ export default function LoginPage() {
               </form>
             ) : (
               <p className="text-center text-green-600 font-medium">
-                ✅ If this email exists, a password reset link has been sent.
+                 If this email exists, a password reset link has been sent.
               </p>
             )}
           </>
