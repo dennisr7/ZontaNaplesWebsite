@@ -48,8 +48,6 @@ export default function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
 
       </Routes>
-
-      <Footer />
     </>
   );
 }
