@@ -7,7 +7,7 @@ export default function Contact() {
       <div className="relative z-10 w-full max-w-2xl">
         <h1 className="text-4xl font-bold mb-4 text-white">Contact Zonta Club of Naples</h1>
         <p className="text-lg mb-12 text-white/90">
-          Have questions or want to get involved? We'd love to hear from you. <br />You can also reach us at info@zonta-naples.org
+          Have questions or want to get involved? We'd love to hear from you. 
         </p>
 
         <form className="w-full bg-white shadow-lg rounded-2xl p-8 space-y-6 text-left">

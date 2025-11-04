@@ -36,7 +36,7 @@ export default function ZontaCentennial() {
           />
 
           <motion.h1 className="text-4xl sm:text-5xl font-bold text-white/95" {...fadeUp(0)}>
-            Zonta — 100 Years of Service & Advocacy
+            Zonta — Over 100 Years of Service & Advocacy
           </motion.h1>
           <motion.p className="mt-4 text-white/90 max-w-3xl mx-auto" {...fadeUp(0.1)}>
             For more than a century, Zonta clubs around the world have united professionals and community

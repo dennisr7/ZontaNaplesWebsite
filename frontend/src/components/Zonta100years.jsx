@@ -32,7 +32,7 @@ export default function Zonta100Years() {
         transition={{ duration: 0.8, delay: 0.2 }}
         viewport={{ once: true }}
       >
-        Celebrating 100 Years
+        Celebrating Over 100 Years
       </motion.h3>
 
       <motion.p
@@ -42,7 +42,7 @@ export default function Zonta100Years() {
         transition={{ duration: 0.8, delay: 0.4 }}
         viewport={{ once: true }}
       >
-        For a century, Zonta International has worked to advance the status of
+        For over a century, Zonta International has worked to advance the status of
         women through service and advocacy. The Zonta Club of Naples proudly
         continues this legacy, striving for equality, education, and
         empowerment worldwide.

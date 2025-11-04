@@ -25,7 +25,7 @@ export default function Mission() {
             transition={{ duration: 0.8, delay: 0.15 }}
             viewport={{ once: true }}
           >
-            We meet the first Tuesday of every month. Networking and fellowship starts at 11:30, followed by the general meeting at noon!
+            We meet the first Tuesday of every month at the Collier Community Foundation or via Zoom call.
           </motion.p>
 
           <motion.h3
@@ -35,8 +35,8 @@ export default function Mission() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            The Hampton Social <br />
-            9114 Strada Pl, Naples, FL 34108
+            The Collier Community Foundation <br />
+            1110 Pine Ridge Rd Ste 200, Naples, FL 34108
           </motion.h3>
         </div>
 
@@ -49,7 +49,7 @@ export default function Mission() {
           viewport={{ once: true }}
         >
           <a
-            href="https://www.google.com/maps/place/The+Hampton+Social+-+Naples/@26.2525365,-81.7988287,17z/data=!4m15!1m8!3m7!1s0x88db1e94e3fa45cb:0x818327db950fc670!2s9114+Strada+Pl,+Naples,+FL+34108!3b1!8m2!3d26.2525365!4d-81.7988287!16s%2Fg%2F11pvcvnj2c!3m5!1s0x88db1fdd60808ff1:0x31a88711e9c35fd3!8m2!3d26.2529083!4d-81.7996599!16s%2Fg%2F11fj3038j8?entry=ttu&g_ep=EgoyMDI1MTAyNy4wIKXMDSoASAFQAw%3D%3D"
+            href="https://www.google.com/maps/place/Collier+Community+Foundation/@26.2111588,-81.7987518,17.21z/data=!3m1!5s0x88db1e6b9b284415:0x9eb3f1c0fb63443a!4m6!3m5!1s0x88dae1e7a398639b:0x45596724d5304443!8m2!3d26.2109188!4d-81.7966863!16s%2Fg%2F1td48skv?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D"
             target="_blank"
             rel="noopener noreferrer"
           >
