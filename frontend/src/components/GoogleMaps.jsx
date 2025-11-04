@@ -49,7 +49,7 @@ export default function Mission() {
           viewport={{ once: true }}
         >
           <a
-            href="https://www.google.com/maps/place/Collier+Community+Foundation/@26.2111588,-81.7987518,17.21z/data=!3m1!5s0x88db1e6b9b284415:0x9eb3f1c0fb63443a!4m6!3m5!1s0x88dae1e7a398639b:0x45596724d5304443!8m2!3d26.2109188!4d-81.7966863!16s%2Fg%2F1td48skv?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D"
+            href="https://www.google.com/maps/place/Collier+Community+Foundation/@26.2111588,-81.7987518,17.21z/data=!3m1!5s0x88db1e6b9b284415:0x9eb3f1c0fb63443a!4m6!3m5!1s0x88dae1e7a398639b:0x45596724d5304443!8m2!3d26.2109188!4d-81.7966863!16s%2Fg%2F1td48skv?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3Dy"
             target="_blank"
             rel="noopener noreferrer"
           >
