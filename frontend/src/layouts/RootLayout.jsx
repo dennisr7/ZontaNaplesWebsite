@@ -20,7 +20,11 @@ export default function RootLayout() {
       case "/faq":
         return { navbar: "default", footer: "red" };
       case "/impact":
-        return { navbar: "red", footer: "red" }; // Changed navbar to "red"
+        return { navbar: "red", footer: "red" };
+      case "/login": // ← ADD THIS LINE
+        return { navbar: "default", footer: "red" };
+      case "/merchandise":
+        return { navbar: "default", footer: "red" };
       default: // Home page
         return { navbar: "default", footer: "default" };
     }
