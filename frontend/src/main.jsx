@@ -17,6 +17,7 @@ import { CartProvider } from "./context/CartContext.jsx"; // ✅ Correct
 import MerchandisePage from "./pages/MerchandisePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
+import EventsPage from "./pages/Events.jsx";
 
 
 
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/merchandise" element={<MerchandisePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/events" element={<EventsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

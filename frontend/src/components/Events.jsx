@@ -1,21 +1,19 @@
 // src/components/Events.jsx
 import { motion } from "framer-motion";
-
-const events = [
-  { title: "Community Service Day", date: "Nov 12, 2025" },
-  { title: "Fundraising Gala", date: "Dec 5, 2025" },
-  { title: "Leadership Workshop", date: "Jan 20, 2026" },
-];
+import { EVENTS } from "../data/events";
 
 export default function Events() {
+  // Get the soonest 3 events
+  const upcomingEvents = EVENTS.slice(0, 3);
+
   return (
     <section id="events" className="bg-gray-100 py-20">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <h3 className="text-3xl font-bold text-red-800 mb-10">Upcoming Events</h3>
         <div className="grid md:grid-cols-3 gap-8">
-          {events.map((event, i) => (
+          {upcomingEvents.map((event, i) => (
             <motion.div
-              key={i}
+              key={event.id}
               whileHover={{ scale: 1.05 }}
               className="bg-white rounded-2xl shadow-md p-6"
             >

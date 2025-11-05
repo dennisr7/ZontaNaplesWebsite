@@ -25,7 +25,7 @@ export default function Navbar({ backgroundColor = 'default' }) {
       backgroundColor === 'blue' 
         ? 'bg-[#6EC1E4]' 
         : backgroundColor === 'red' 
-        ? 'bg-[rgb(140,50,50)]' // Changed to /90 to match Impact page
+        ? 'bg-[rgb(140,50,50)]'
         : 'bg-yellow-600'
     }`}>
       <div className="w-full flex justify-between items-center px-20 py-4">
@@ -53,6 +53,17 @@ export default function Navbar({ backgroundColor = 'default' }) {
             </a>
           </li>
           
+          {/* Events page link */}
+          <li>
+            <Link
+              to="/events"
+              onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
+            >
+              EVENTS
+            </Link>
+          </li>
+          
           {/* Impact page link */}
           <li>
             <Link
@@ -74,18 +85,8 @@ export default function Navbar({ backgroundColor = 'default' }) {
               MEMBERSHIP
             </Link>
           </li>
-
-          {/* FAQ page link */}
-          <li>
-            <Link
-              to="/faq"
-              onClick={scrollToTop}
-              className="hover:text-yellow-700 transition"
-            >
-              FAQ
-            </Link>
-          </li>
-          {/*Merchandise page */}
+          
+          {/* Merchandise page */}
           <li>
             <Link
               to="/merchandise"
@@ -93,17 +94,7 @@ export default function Navbar({ backgroundColor = 'default' }) {
               className="hover:text-yellow-700 transition"
             >
               MERCHANDISE
-              </Link>
-            </li>
-            {/*Login Page */}
-          <li>
-            <Link
-              to="/login"
-              onClick={scrollToTop}
-              className="hover:text-yellow-700 transition"
-            >
-              LOGIN
-              </Link>
+            </Link>
           </li>
 
           {/* Contact page link */}
