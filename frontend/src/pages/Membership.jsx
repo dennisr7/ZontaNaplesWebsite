@@ -85,6 +85,26 @@ export default function Membership() {
           </div>
         </div>
 
+        {/* Membership Pricing Section */}
+        <div className="bg-white/95 backdrop-blur rounded-2xl p-8 shadow-xl mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">Membership Investment</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
+              <h3 className="font-semibold text-gray-800 mb-2">First Year Membership</h3>
+              <p className="text-3xl font-bold text-yellow-700">$170</p>
+              <p className="text-gray-600 text-sm mt-2">Includes initiation and first year dues</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-6 border border-green-200">
+              <h3 className="font-semibold text-gray-800 mb-2">Annual Renewal</h3>
+              <p className="text-3xl font-bold text-green-700">$148</p>
+              <p className="text-gray-600 text-sm mt-2">For returning members each year</p>
+            </div>
+          </div>
+          <p className="text-gray-600 mt-4 text-sm">
+            Your investment supports our local service projects, advocacy work, and global Zonta initiatives.
+          </p>
+        </div>
+
         {/* Enhanced Membership Application Form */}
         <div className="bg-white/95 backdrop-blur rounded-2xl p-8 shadow-xl">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Membership Application</h2>
@@ -150,13 +170,12 @@ export default function Membership() {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Membership Information</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Membership Level *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Membership Type *</label>
                   <select className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-                    <option value="">Select membership level</option>
-                    <option value="active">Active Member - $150/year</option>
-                    <option value="young">Young Professional (under 35) - $75/year</option>
-                    <option value="student">Student Member - $25/year</option>
-                    <option value="retired">Retired Member - $75/year</option>
+                    <option value="">Select membership type</option>
+                    <option value="new">New Member - $170 (first year)</option>
+                    <option value="renewing">Renewing Member - $148 (annual)</option>
+                    <option value="transfer">Transferring Member</option>
                   </select>
                 </div>
                 <div>
@@ -213,8 +232,9 @@ export default function Membership() {
               <label className="flex items-start">
                 <input type="checkbox" className="mr-2 mt-1" required />
                 <span className="text-sm text-gray-700">
-                  I understand that membership requires payment of dues and active participation in club activities. 
-                  I agree to abide by the bylaws and policies of Zonta International and Zonta Club of Naples. *
+                  I understand that membership requires payment of dues ($170 for first year, $148 for annual renewal) 
+                  and active participation in club activities. I agree to abide by the bylaws and policies of Zonta International 
+                  and Zonta Club of Naples. *
                 </span>
               </label>
             </div>
@@ -227,7 +247,7 @@ export default function Membership() {
             </button>
 
             <p className="text-center text-sm text-gray-600">
-              After submitting, our membership chair will contact you within 3-5 business days to discuss next steps.
+              After submitting, our membership chair will contact you within 3-5 business days to discuss next steps and payment options.
             </p>
           </form>
         </div>
