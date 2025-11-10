@@ -96,7 +96,15 @@ export default function Navbar({ backgroundColor = 'default' }) {
               MERCHANDISE
             </Link>
           </li>
-
+           <li>
+            <Link
+              to="/scholarships"
+              onClick={scrollToTop}
+              className="hover:text-yellow-700 transition"
+            >
+              SCHOLARSHIPS
+            </Link>
+          </li>
           {/* Contact page link */}
           <li>
             <Link

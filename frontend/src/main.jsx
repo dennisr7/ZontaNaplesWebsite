@@ -18,6 +18,11 @@ import MerchandisePage from "./pages/MerchandisePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import EventsPage from "./pages/Events.jsx";
+import ScholarshipsHome from "./pages/ScholarshipsHome.jsx";
+
+import YWPAApply from "./pages/YWPAApply.jsx";
+import STEMApply from "./pages/STEMApply.jsx";
+import FGCUApply from "./pages/FGCUApply.jsx";
 
 
 
@@ -41,6 +46,10 @@ createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<LoginPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/scholarships" element={<ScholarshipsHome />} />
+          <Route path="/scholarships/ywpa-apply" element={<YWPAApply />} />
+          <Route path="/scholarships/stem-apply" element={<STEMApply />} />
+          <Route path="/scholarships/fgcu-apply" element={<FGCUApply />} />
         </Route>
       </Routes>
     </BrowserRouter>
