@@ -14,6 +14,27 @@ export default function FAQ() {
 
   const faqItems = [
     {
+  question: "What foundation does Zonta support?",
+  answer: (
+    <>
+      Zonta supports the <strong>Zonta Foundation for Women</strong>, the charitable arm of Zonta International.
+      Since 1923, the Foundation has funded programs that empower women and girls globally through education,
+      health, economic opportunity, and leadership development. It supports initiatives like scholarships,
+      fellowships, and service projects focused on ending gender-based violence and promoting gender equality.
+      <br /><br />
+      Learn more about the foundation and its impact{" "}
+      <a
+        href="https://www.zonta.org/Web/Web/Your_Support/The_Foundation.aspx"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-yellow-700 hover:underline font-semibold"
+      >
+        here
+      </a>.
+    </>
+  ),
+},
+    {
       question: "What is Zonta International?",
       answer: "Zonta International is a global organization of professionals empowering women worldwide through service and advocacy. With over 28,000 members in 61 countries, we work to advance the status of women politically, economically, and professionally."
     },

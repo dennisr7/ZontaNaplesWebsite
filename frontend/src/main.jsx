@@ -24,6 +24,7 @@ import YWPAApply from "./pages/YWPAApply.jsx";
 import STEMApply from "./pages/STEMApply.jsx";
 import FGCUApply from "./pages/FGCUApply.jsx";
 
+import WhoWeAre from "./pages/WhoWeAre.jsx";
 
 
 
@@ -50,6 +51,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/scholarships/ywpa-apply" element={<YWPAApply />} />
           <Route path="/scholarships/stem-apply" element={<STEMApply />} />
           <Route path="/scholarships/fgcu-apply" element={<FGCUApply />} />
+          <Route path="/who-we-are" element={<WhoWeAre />} />
         </Route>
       </Routes>
     </BrowserRouter>

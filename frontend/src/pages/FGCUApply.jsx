@@ -1,7 +1,6 @@
-// src/pages/FGCUApply.jsx
 export default function FGCUApply() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="max-w-3xl mx-auto px-6 py-16 pt-28">
       <h1 className="text-3xl font-bold text-yellow-800 mb-4">
         FGCU Memorial Scholarship Endowment Fund Application
       </h1>

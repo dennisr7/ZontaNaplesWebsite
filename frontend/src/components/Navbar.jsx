@@ -52,6 +52,14 @@ export default function Navbar({ backgroundColor = 'default' }) {
               HOME
             </a>
           </li>
+          <li>
+            <Link 
+            to="/who-we-are" 
+            className="hover:text-yellow-300"
+            >
+              WHO WE ARE
+            </Link>
+          </li>
           
           {/* Events page link */}
           <li>
