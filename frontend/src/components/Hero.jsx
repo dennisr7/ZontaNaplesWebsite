@@ -43,7 +43,6 @@ export default function Hero() {
         </p>
 
         <div className="space-x-4">
-          {/* ✅ Updated Join Us button */}
           <Link
             to="/membership"
             className="inline-block bg-white text-yellow-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-100 transition"
@@ -51,7 +50,6 @@ export default function Hero() {
             Join Us
           </Link>
 
-          {/* ✅ Donate button */}
           <Link
             to="/donate"
             className="inline-block bg-yellow-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-700 transition"

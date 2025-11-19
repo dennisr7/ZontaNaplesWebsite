@@ -23,7 +23,7 @@ export default function RootLayout() {
         return { navbar: "red", footer: "red" };
       case "/login": 
         return { navbar: "default", footer: "red" };
-      case "/merchandise":
+      case "/shop":
         return { navbar: "default", footer: "red" };
       case "/checkout":
         return { navbar: "default", footer: "red" };
