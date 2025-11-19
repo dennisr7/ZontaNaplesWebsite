@@ -13,12 +13,6 @@ import GoogleMaps from "./components/GoogleMaps.jsx";
 import Sponsors from "./components/Sponsors.jsx";
 import CallToAction from "./components/CallToAction.jsx";
 
-import MerchandisePage from "./pages/MerchandisePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-
-import CheckoutPage from "./pages/CheckoutPage.jsx";
-
-
 export default function App() {
   return (
     <>
@@ -41,12 +35,6 @@ export default function App() {
             </div>
           }
         />
-
-        {/* Other Pages */}
-        <Route path="/merchandise" element={<MerchandisePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-
       </Routes>
     </>
   );

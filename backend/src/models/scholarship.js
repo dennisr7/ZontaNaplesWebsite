@@ -27,7 +27,6 @@ const scholarshipSchema = new mongoose.Schema({
         filename: String,
         cloudinaryUrl: String,
         cloudinaryPublicId: String,
-        path: String,
         size: Number,
         mimetype: String,
         uploadedAt: {
@@ -67,3 +66,5 @@ scholarshipSchema.set('toObject', { virtuals: true });
 const Scholarship = mongoose.model('Scholarship', scholarshipSchema);
 
 export default Scholarship;
+
+//since we are going to have multiple scholarhips, an attribute for scholarship type

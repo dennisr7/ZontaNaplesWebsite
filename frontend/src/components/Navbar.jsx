@@ -97,11 +97,11 @@ export default function Navbar({ backgroundColor = 'default' }) {
           {/* Merchandise page */}
           <li>
             <Link
-              to="/merchandise"
+              to="/shop"
               onClick={scrollToTop}
               className="hover:text-yellow-700 transition"
             >
-              MERCHANDISE
+              SHOP
             </Link>
           </li>
            <li>

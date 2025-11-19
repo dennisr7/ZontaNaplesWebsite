@@ -1,0 +1,179 @@
+import mongoose from 'mongoose';
+
+const productSchema = new mongoose.Schema({
+    // Basic Product Information
+    name: {
+        type: String,
+        required: [true, 'Product name is required'],
+        trim: true,
+        maxlength: [200, 'Product name cannot exceed 200 characters']
+    },
+    description: {
+        type: String,
+        required: [true, 'Product description is required'],
+        trim: true,
+        maxlength: [500, 'Description cannot exceed 500 characters']
+    },
+    shortDescription: {
+        type: String,
+        trim: true,
+        maxlength: [250, 'Short description cannot exceed 250 characters']
+    },
+    
+    // Pricing
+    price: {
+        type: Number,
+        required: [true, 'Product price is required'],
+        min: [0, 'Price cannot be negative']
+    },
+   
+    // Inventory
+    inventory: {
+        type: Number,
+        required: true,
+        default: 0,
+        min: [0, 'Inventory cannot be negative']
+    },
+    trackInventory: {
+        type: Boolean,
+        default: true
+    },
+    allowBackorder: {
+        type: Boolean,
+        default: false
+    },
+    sku: {
+        type: String,
+        trim: true,
+        unique: true,
+        sparse: true
+    },
+    
+    // Categorization
+    category: {
+        type: String,
+        required: true,
+        enum: ['Apparel', 'Accessories', 'Books', 'Home & Garden', 'Jewelry', 'Art', 'Other'],
+        default: 'Other'
+    },
+     
+    // Images
+    images: [{
+        url: {
+            type: String,
+            required: true
+        },
+        publicId: {
+            type: String,
+            required: true // Required for Cloudinary deletion
+        },
+        alt: {
+            type: String,
+            default: ''
+        }
+    }],
+    
+    // Product Status
+    status: {
+        type: String,
+        enum: ['active', 'draft', 'archived'],
+        default: 'draft'
+    },
+    
+    // Shipping
+    weight: {
+        type: Number,
+        min: 0
+    },
+    weightUnit: {
+        type: String,
+        enum: ['lb', 'oz', 'kg', 'g'],
+        default: 'lb'
+    },
+    requiresShipping: {
+        type: Boolean,
+        default: true
+    },
+    
+    // SEO
+    slug: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    
+    // Stats
+    totalSold: {
+        type: Number,
+        default: 0,
+        min: 0
+    },
+    
+    // Stripe Integration
+    stripePriceId: {
+        type: String
+    },
+    stripeProductId: {
+        type: String
+    }
+}, {
+    timestamps: true
+});
+
+// Indexes for better query performance
+productSchema.index({ status: 1, createdAt: -1 });
+productSchema.index({ category: 1, status: 1 });
+productSchema.index({ name: 'text', description: 'text' });
+
+// Virtual for stock status
+productSchema.virtual('inStock').get(function() {
+    if (!this.trackInventory) return true;
+    if (this.allowBackorder) return true;
+    return this.inventory > 0;
+});
+
+// Generate slug from name
+productSchema.pre('save', function(next) {
+    if (this.isModified('name') && !this.slug) {
+        this.slug = this.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+    
+    next();
+});
+
+// Method to check if available for purchase
+productSchema.methods.isAvailable = function() {
+    if (this.status !== 'active') return false;
+    if (!this.trackInventory) return true;
+    if (this.allowBackorder) return true;
+    return this.inventory > 0;
+};
+
+// Method to decrease inventory after purchase
+productSchema.methods.decreaseInventory = function(quantity = 1) {
+    if (this.trackInventory) {
+        this.inventory = Math.max(0, this.inventory - quantity);
+        this.totalSold += quantity;
+    }
+    return this.save();
+};
+
+// Method to increase inventory (returns/restocks)
+productSchema.methods.increaseInventory = function(quantity = 1) {
+    if (this.trackInventory) {
+        this.inventory += quantity;
+    }
+    return this.save();
+};
+
+// Static method to get active products
+productSchema.statics.getActiveProducts = function() {
+    return this.find({ status: 'active' }).sort({ createdAt: -1 });
+};
+
+const Product = mongoose.model('Product', productSchema);
+
+export default Product; 
