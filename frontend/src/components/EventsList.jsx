@@ -1,34 +1,17 @@
-import { useState, useEffect } from 'react';
-import { eventAPI } from '../utils/apiService';
-
-// this events page would be an example of using the eventAPI to get events from the backend
+import { useState } from 'react';
+import { useEvents } from '../hooks/useEvents';
+import EventRsvpButton from './EventRsvpForm';
 
 function EventsList() {
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [filter, setFilter] = useState(''); // 'fundraiser', 'meeting', 'social', 'service', 'other'
 
-    const fetchEvents = async () => {
-        setLoading(true);
-        setError(null);
-        
-        try {
-            const filters = filter ? { type: filter } : {};
-            const result = await eventAPI.getAllEvents(filters);
-            setEvents(result.data || []);
-        } catch (err) {
-            console.error('Error fetching events:', err);
-            setError('Failed to load events. Please try again later.');
-        } finally {
-            setLoading(false);
-        }
-    };
+    // Build filters object
+    const filters = {};
+    if (filter) filters.type = filter;
+    filters.status = 'active';
 
-    useEffect(() => {
-        fetchEvents();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter]);
+    // Use React Query hook
+    const { data: events = [], isLoading: loading, isError, error } = useEvents(filters);
 
     const formatDate = (dateString) => {
         const options = { 
@@ -50,29 +33,29 @@ function EventsList() {
         );
     }
 
-    if (error) {
+    if (isError) {
         return (
             <div className="container-custom p-6">
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                    {error}
+                    {error?.message || 'Failed to load events. Please try again later.'}
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="container-custom p-6">
-            <div className="mb-12">
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold text-zonta-burgundy mb-4">Upcoming Events</h2>
-                    <div className="w-24 h-1 bg-zonta-gold mx-auto mb-6"></div>
-                    <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-                        Join us for meaningful events that make a difference in our community
-                    </p>
-                </div>
-                
-                {/* Filter buttons */}
-                <div className="flex flex-wrap justify-center gap-3">
+        <div className="container-custom">
+            {/* Header */}
+            <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl font-bold text-zonta-burgundy mb-4">Upcoming Events</h2>
+                <div className="w-24 h-1 bg-zonta-gold mx-auto mb-6"></div>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Join us for meaningful events that make a difference in our community
+                </p>
+            </div>
+            
+            {/* Filter buttons */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
                     <button
                         onClick={() => setFilter('')}
                         className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
@@ -123,7 +106,6 @@ function EventsList() {
                     >
                         Service
                     </button>
-                </div>
             </div>
 
             {events.length === 0 ? (
@@ -190,6 +172,14 @@ function EventsList() {
                                             <span>Max {event.maxAttendees} attendees</span>
                                         </div>
                                     )}
+                                </div>
+
+                                {/* RSVP Button */}
+                                <div className="mt-4 pt-4 border-t border-gray-200">
+                                    <EventRsvpButton 
+                                        eventId={event._id}
+                                        eventTitle={event.title}
+                                    />
                                 </div>
                             </div>
                         </div>

@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiService from '../utils/apiService';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const ProductCheckout = () => {
+    usePageTitle('Checkout');
     const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);

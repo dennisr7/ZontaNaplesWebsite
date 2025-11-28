@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { memberAPI } from '../../utils/apiService';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 function MemberManagement() {
+    usePageTitle('Admin - Members');
     const [members, setMembers] = useState([]);
     const [filteredMembers, setFilteredMembers] = useState([]);
     const [loading, setLoading] = useState(true);

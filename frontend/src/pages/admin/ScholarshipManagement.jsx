@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { scholarshipAPI } from '../../utils/apiService';
 import { Link } from 'react-router-dom';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 function ScholarshipManagement() {
+    usePageTitle('Admin - Scholarship Applications');
     const [scholarships, setScholarships] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

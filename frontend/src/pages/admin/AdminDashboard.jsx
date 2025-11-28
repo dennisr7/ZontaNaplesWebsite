@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { scholarshipAPI, eventAPI, memberAPI } from '../../utils/apiService';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function AdminDashboard() {
+    usePageTitle('Admin Dashboard');
     const [stats, setStats] = useState({
         scholarships: { total: 0, pending: 0, underReview: 0 },
         events: { total: 0, upcoming: 0 },

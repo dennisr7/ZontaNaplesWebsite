@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import apiService from '../../utils/apiService';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const ProductForm = () => {
+    usePageTitle('Admin - Product Form');
     const navigate = useNavigate();
     const { id } = useParams();
     const isEdit = Boolean(id);

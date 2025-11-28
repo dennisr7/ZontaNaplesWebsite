@@ -1,20 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import apiService from '../utils/apiService';
+import { useProducts, useProductCategories } from '../hooks/useProducts';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const Shop = () => {
+    usePageTitle('Shop');
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
     
     // Filters
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [sortBy, setSortBy] = useState('-createdAt');
     const [searchQuery, setSearchQuery] = useState('');
+
+    // Fetch data with React Query
+    const { data: products = [], isLoading, isError } = useProducts();
+    const { data: categories = [] } = useProductCategories();
 
     // Handle canceled checkout - mark order as failed
     useEffect(() => {
@@ -48,38 +49,8 @@ const Shop = () => {
         }
     }, [searchParams, navigate]);
 
-    useEffect(() => {
-        fetchProducts();
-        fetchCategories();
-    }, []);
-
-    const fetchProducts = async () => {
-        try {
-            setLoading(true);
-            const response = await apiService.get('/api/products');
-            if (response.data.success) {
-                setProducts(response.data.data);
-            }
-        } catch (err) {
-            setError('Failed to load products');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchCategories = async () => {
-        try {
-            const response = await apiService.get('/api/products/categories');
-            if (response.data.success) {
-                setCategories(response.data.data);
-            }
-        } catch (err) {
-            console.error('Failed to load categories:', err);
-        }
-    };
-
-    const filterProducts = useCallback(() => {
+    // Filter and sort products with useMemo
+    const filteredProducts = useMemo(() => {
         let filtered = [...products];
 
         // Filter by category
@@ -114,18 +85,14 @@ const Shop = () => {
                 break;
         }
 
-        setFilteredProducts(filtered);
+        return filtered;
     }, [products, selectedCategory, sortBy, searchQuery]);
-
-    useEffect(() => {
-        filterProducts();
-    }, [filterProducts]);
 
     const handleBuyNow = (productId) => {
         navigate(`/shop/checkout/${productId}`);
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
@@ -137,14 +104,15 @@ const Shop = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen bg-gray-50 pt-32 pb-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                        Zonta Shop
+                    <h1 className="text-4xl md:text-5xl font-bold text-zonta-burgundy mb-4">
+                        Shop
                     </h1>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <div className="w-24 h-1 bg-zonta-gold mx-auto mb-6"></div>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                         Support our mission by purchasing Zonta merchandise. All proceeds benefit our programs.
                     </p>
                 </div>
@@ -204,9 +172,9 @@ const Shop = () => {
                     </div>
                 </div>
 
-                {error && (
+                {isError && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                        {error}
+                        Failed to load products. Please try again later.
                     </div>
                 )}
 

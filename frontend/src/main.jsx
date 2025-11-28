@@ -3,44 +3,51 @@ import "@fontsource/montserrat";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import "./index.css";
+
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
+      gcTime: 10 * 60 * 1000, // Cache for 10 minutes (formerly cacheTime)
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 import RootLayout from "./layouts/RootLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-import App from "./App.jsx";                // Home sections
-import Contact from "./pages/Contact.jsx";  // Contact page
-import Donate from "./pages/Donate.jsx"; // Donation page
-import ZontaCentennial from "./pages/ZontaCentennial.jsx"; //Zonta100Years page
-import Membership from "./pages/Membership.jsx"; 
-import FAQ from "./pages/FAQ.jsx";
-import Impact from "./pages/Impact.jsx"; // ← ADD THIS IMPORT
-import { CartProvider } from "./context/CartContext.jsx"; // ✅ Correct
-import Shop from "./pages/Shop.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import CheckoutPage from "./pages/CheckoutPage.jsx";
+// Public Pages
+import App from "./App.jsx";
+import Contact from "./pages/Contact.jsx";
+import Join from "./pages/Join.jsx";
 import EventsPage from "./pages/Events.jsx";
-import ScholarshipsHome from "./pages/ScholarshipsHome.jsx";
-
-import YWPAApply from "./pages/YWPAApply.jsx";
-import STEMApply from "./pages/STEMApply.jsx";
-import FGCUApply from "./pages/FGCUApply.jsx";
-
-import WhoWeAre from "./pages/WhoWeAre.jsx";
-
-import DonateSuccess from "./pages/DonateSuccess.jsx";
-import ShopSuccess from "./pages/ShopSuccess.jsx";
-import ProductCheckout from "./pages/ProductCheckout.jsx";
-
+import Scholarship from "./pages/Scholarship.jsx";
+import ScholarshipApply from "./pages/ScholarshipApply.jsx";
+import Login from "./pages/Login.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import FAQ from "./pages/FAQ.jsx";
+import Impacts from "./pages/Impacts.jsx";
+import WWR from "./pages/WhoWeAre.jsx";
+import ZontaCentennial from "./pages/ZontaCentennial.jsx";
+import Donate from "./pages/Donate.jsx";
+import DonateSuccess from "./pages/DonateSuccess.jsx";
+import Shop from "./pages/Shop.jsx";
+import ProductCheckout from "./pages/ProductCheckout.jsx";
+import ShopSuccess from "./pages/ShopSuccess.jsx";
+import MembershipPaymentSuccess from "./pages/MembershipPaymentSuccess.jsx";
 
-
-
-//admin dashboard 
+// Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import ScholarshipManagement from "./pages/admin/ScholarshipManagement.jsx";
 import ScholarshipDetail from "./pages/admin/ScholarshipDetail.jsx";
+import ScholarshipListingManagement from "./pages/admin/ScholarshipListingManagement.jsx";
+import ScholarshipListingForm from "./pages/admin/ScholarshipListingForm.jsx";
 import EventManagement from "./pages/admin/EventManagement.jsx";
 import EventCreate from "./pages/admin/EventCreate.jsx";
 import EventEdit from "./pages/admin/EventEdit.jsx";
@@ -51,39 +58,42 @@ import ProductManagement from "./pages/admin/ProductManagement.jsx";
 import ProductForm from "./pages/admin/ProductForm.jsx";
 import OrderManagement from "./pages/admin/OrderManagement.jsx";
 
-
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartProvider>
-    <BrowserRouter>
-      <Routes>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+        {/* Public Routes */}
         <Route element={<RootLayout />}>
           <Route path="/" element={<App />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/scholarship" element={<Scholarship />} />
+          <Route path="/scholarship/apply" element={<ScholarshipApply />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/impacts" element={<Impacts />} />
+          <Route path="/who-we-are" element={<WWR />} />
+          <Route path="/centennial" element={<ZontaCentennial />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/donate/success" element={<DonateSuccess />} />
-          <Route path="/centennial" element={<ZontaCentennial />} />
-          <Route path="/membership" element={<Membership />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/impact" element={<Impact />} /> {/* ← ADD THIS ROUTE */}
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/checkout/:id" element={<ProductCheckout />} />
           <Route path="/shop/success" element={<ShopSuccess />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/scholarships" element={<ScholarshipsHome />} />
-          <Route path="/scholarships/ywpa-apply" element={<YWPAApply />} />
-          <Route path="/scholarships/stem-apply" element={<STEMApply />} />
-          <Route path="/scholarships/fgcu-apply" element={<FGCUApply />} />
-          <Route path="/who-we-are" element={<WhoWeAre />} />
+          <Route path="/membership/payment-success" element={<MembershipPaymentSuccess />} />
         </Route>
 
+        {/* Hidden Admin Login - no navbar/footer */}
+        <Route path="/admin/login" element={<Login />} />
+
+        {/* Admin Routes - Protected */}
         <Route element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/scholarships" element={<ScholarshipManagement />} />
           <Route path="/admin/scholarships/:id" element={<ScholarshipDetail />} />
+          <Route path="/admin/scholarship-listings" element={<ScholarshipListingManagement />} />
+          <Route path="/admin/scholarship-listings/create" element={<ScholarshipListingForm />} />
+          <Route path="/admin/scholarship-listings/edit/:id" element={<ScholarshipListingForm />} />
           <Route path="/admin/events" element={<EventManagement />} />
           <Route path="/admin/events/create" element={<EventCreate />} />
           <Route path="/admin/events/edit/:id" element={<EventEdit />} />
@@ -99,6 +109,6 @@ createRoot(document.getElementById("root")).render(
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-    </CartProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

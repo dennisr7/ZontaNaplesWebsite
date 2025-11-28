@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { eventAPI } from '../../utils/apiService';
 import { Link } from 'react-router-dom';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 function EventManagement() {
+    usePageTitle('Admin - Events');
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

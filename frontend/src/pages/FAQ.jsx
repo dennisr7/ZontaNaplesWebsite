@@ -1,7 +1,8 @@
-// src/pages/FAQ.jsx
 import { useState } from "react";
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function FAQ() {
+  usePageTitle('FAQ');
   const [openItems, setOpenItems] = useState([]);
 
   const toggleItem = (index) => {
@@ -14,26 +15,26 @@ export default function FAQ() {
 
   const faqItems = [
     {
-  question: "What foundation does Zonta support?",
-  answer: (
-    <>
-      Zonta supports the <strong>Zonta Foundation for Women</strong>, the charitable arm of Zonta International.
-      Since 1923, the Foundation has funded programs that empower women and girls globally through education,
-      health, economic opportunity, and leadership development. It supports initiatives like scholarships,
-      fellowships, and service projects focused on ending gender-based violence and promoting gender equality.
-      <br /><br />
-      Learn more about the foundation and its impact{" "}
-      <a
-        href="https://www.zonta.org/Web/Web/Your_Support/The_Foundation.aspx"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-yellow-700 hover:underline font-semibold"
-      >
-        here
-      </a>.
-    </>
-  ),
-},
+      question: "What foundation does Zonta support?",
+      answer: (
+        <>
+          Zonta supports the <strong>Zonta Foundation for Women</strong>, the charitable arm of Zonta International.
+          Since 1923, the Foundation has funded programs that empower women and girls globally through education,
+          health, economic opportunity, and leadership development. It supports initiatives like scholarships,
+          fellowships, and service projects focused on ending gender-based violence and promoting gender equality.
+          <br /><br />
+          Learn more about the foundation and its impact{" "}
+          <a
+            href="https://www.zonta.org/Web/Web/Your_Support/The_Foundation.aspx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-yellow-700 hover:underline font-semibold"
+          >
+            here
+          </a>.
+        </>
+      ),
+    },
     {
       question: "What is Zonta International?",
       answer: "Zonta International is a global organization of professionals empowering women worldwide through service and advocacy. With over 28,000 members in 61 countries, we work to advance the status of women politically, economically, and professionally."
@@ -81,37 +82,31 @@ export default function FAQ() {
   ];
 
   return (
-    <main className="relative min-h-screen pt-32 px-6 flex flex-col items-center text-center overflow-hidden">
-      {/* Gradient background matching other pages */}
-      <div className="absolute inset-0 bg-gradient-to-b from-yellow-600/80 via-yellow-700/70 to-red-900/90" />
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-4xl">
-        {/* Zonta Logo at top */}
-        <img
-          src="/src/assets/zonta-full-logo.png"
-          alt="Zonta Club Full Logo"
-          className="mx-auto mb-8 w-48 opacity-90"
-        />
-
-        {/* Title with Montserrat font */}
-        <h1 className="text-4xl font-bold mb-4 text-white font-[Montserrat]">Frequently Asked Questions</h1>
-        <p className="text-lg mb-12 text-white/90">
-          Find answers to common questions about Zonta Club of Naples and our work in the community.
-        </p>
+    <div className="min-h-screen bg-gray-50 pt-32 pb-16">
+      <div className="container-custom">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-zonta-burgundy mb-4">
+            Frequently Asked Questions
+          </h1>
+          <div className="w-24 h-1 bg-zonta-gold mx-auto mb-6"></div>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Find answers to common questions about Zonta Club of Naples and our work in the community.
+          </p>
+        </div>
 
         {/* FAQ Section */}
-        <div className="bg-white/95 backdrop-blur rounded-2xl p-8 shadow-xl">
+        <div className="max-w-4xl mx-auto">
           <div className="space-y-4">
             {faqItems.map((item, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+              <div key={index} className="bg-white border-2 border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                 <button
                   onClick={() => toggleItem(index)}
-                  className="w-full text-left p-6 bg-white hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center"
+                  className="w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center"
                 >
-                  <span className="text-lg font-semibold text-gray-800 pr-4">{item.question}</span>
+                  <span className="text-lg font-semibold text-zonta-burgundy pr-4">{item.question}</span>
                   <svg
-                    className={`w-6 h-6 text-yellow-600 transform transition-transform duration-200 ${
+                    className={`w-6 h-6 text-zonta-gold flex-shrink-0 transform transition-transform duration-200 ${
                       openItems.includes(index) ? 'rotate-180' : ''
                     }`}
                     fill="none"
@@ -122,7 +117,7 @@ export default function FAQ() {
                   </svg>
                 </button>
                 {openItems.includes(index) && (
-                  <div className="p-6 bg-gray-50 border-t border-gray-200">
+                  <div className="p-6 bg-gray-50 border-t-2 border-gray-200">
                     <p className="text-gray-700 leading-relaxed">{item.answer}</p>
                   </div>
                 )}
@@ -131,21 +126,21 @@ export default function FAQ() {
           </div>
 
           {/* Additional Help Section */}
-          <div className="mt-12 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Still have questions?</h3>
-            <p className="text-gray-700 mb-4">
+          <div className="mt-12 p-8 bg-white border-2 border-zonta-gold rounded-xl shadow-lg">
+            <h3 className="text-2xl font-bold text-zonta-burgundy mb-3">Still have questions?</h3>
+            <p className="text-gray-700 mb-6">
               We're here to help! Contact our membership team for more information.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/contact"
-                className="inline-block bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+                className="inline-block bg-zonta-burgundy hover:bg-zonta-burgundy-dark text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg text-center"
               >
                 Contact Us
               </a>
               <a
-                href="/membership"
-                className="inline-block bg-white hover:bg-gray-100 text-yellow-600 border border-yellow-600 px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+                href="/join"
+                className="inline-block bg-white hover:bg-gray-50 text-zonta-burgundy border-2 border-zonta-burgundy px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg text-center"
               >
                 Join Our Club
               </a>
@@ -153,6 +148,6 @@ export default function FAQ() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
