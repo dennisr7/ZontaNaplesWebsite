@@ -1,3 +1,4 @@
+// src/pages/ScholarshipsHome.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,8 @@ export default function ScholarshipsHome() {
       desc:
         "Supports women pursuing degrees or careers in science, technology, engineering, or mathematics — fields where women remain underrepresented.",
       img: "/scholarships/stem.jpg",
-      externalLink: "https://www.zonta.org/Web/Programs/Education/Women_in_STEM_Scholarship",
+      externalLink:
+        "https://www.zonta.org/Web/Programs/Education/Women_in_STEM_Scholarship",
     },
     {
       title: "FGCU Memorial Scholarship Endowment Fund",
@@ -28,101 +30,126 @@ export default function ScholarshipsHome() {
   ];
 
   return (
-    <div className="bg-white text-gray-900 pt-24">
-      {/* Hero Header */}
-      <section className="bg-[#5C1E0D] text-white text-center py-14 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl font-bold uppercase mb-4">
-            Scholarships | Kim Artis, Chairperson
-          </h1>
-          <p className="italic text-xl mb-2">
-            “We have proven over the years that by working together across political and social boundaries – we can make a difference!”
-          </p>
-        </div>
-      </section>
+    <main className="relative min-h-screen pt-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Global gradient background to match other pages */}
+      <div className="absolute inset-0 bg-gradient-to-b from-yellow-600/80 via-yellow-700/70 to-red-900/90" />
 
-      {/* Story Section */}
-      <section className="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-10 items-center">
-        <div>
+      <div className="relative z-10 max-w-6xl mx-auto pb-16">
+        {/* Hero Header */}
+        <section className="text-center mb-10">
+          {/* Zonta Logo */}
           <img
-            src="/scholarships/fgcu-check2.jpg"
-            alt="Zonta Club presenting check to FGCU"
-            className="rounded-lg shadow-lg object-cover w-full h-auto mt-2 md:mt-6"
+            src="/src/assets/zonta-full-logo.png"
+            alt="Zonta Club Full Logo"
+            className="mx-auto mb-6 w-40 sm:w-48 opacity-90"
           />
-        </div>
-        <div>
-          <h2 className="text-3xl font-semibold text-yellow-800 mb-4">
-            The Zonta Club of Naples Makes History!
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            On November 7, 2019, a Memorial Scholarship Endowed Fund was established at Florida Gulf Coast University in the names of two past Zontians, Helen “Honey” Koenig Gardiner and Sally Sitta, and The Zonta Club of Naples in the amount of <strong>$25,000</strong>.
-          </p>
-          <p className="text-gray-700 leading-relaxed">
-            We believe that investing in women’s education is investing in the future of our community, and the world. Explore our scholarship opportunities below and apply to join the impact.
-          </p>
-        </div>
-      </section>
 
-      {/* Scholarship Cards */}
-      <section className="bg-yellow-50 py-12 px-4">
-        <h3 className="text-3xl font-bold text-center text-yellow-800 mb-10">
-          Explore Our Scholarship Opportunities
-        </h3>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {scholarships.map((s, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1 flex flex-col h-full"
-            >
+          <h1 className="text-4xl font-bold text-white font-[Montserrat] mb-3">
+            Scholarships
+          </h1>
+          <p className="text-sm uppercase tracking-wide text-yellow-200 mb-4">
+            Kim Artis, Scholarship Chair
+          </p>
+
+          <p className="italic text-lg text-white/90 max-w-3xl mx-auto">
+            “We have proven over the years that by working together across political
+            and social boundaries – we can make a difference!”
+          </p>
+        </section>
+
+        {/* Story / FGCU section */}
+        <section className="mb-12">
+          <div className="bg-white/95 backdrop-blur rounded-2xl shadow-xl p-6 sm:p-8 grid md:grid-cols-2 gap-8 items-center">
+            <div>
               <img
-                src={s.img}
-                alt={s.title}
-                className="w-full h-48 object-cover"
+                src="/scholarships/fgcu-check2.jpg"
+                alt="Zonta Club presenting check to FGCU"
+                className="rounded-xl shadow-lg object-cover w-full h-auto mt-2 md:mt-0"
               />
-
-              {/* Flex column to push button to bottom */}
-              <div className="p-6 flex flex-col flex-grow">
-                <h4 className="text-xl font-semibold text-yellow-700 mb-2">
-                  {s.title}
-                </h4>
-                <p className="text-gray-700 mb-4 flex-grow">{s.desc}</p>
-
-                {/* Button at the bottom */}
-                {s.externalLink ? (
-                  <a
-                    href={s.externalLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-auto inline-block bg-gradient-to-r from-yellow-700 to-yellow-800 text-white px-6 py-2.5 rounded-full shadow-md hover:shadow-lg hover:from-yellow-800 hover:to-yellow-900 transition-all duration-300 ease-in-out"
-                  >
-                    Learn More & Apply
-                  </a>
-                ) : (
-                  <Link
-                    to={s.link}
-                    className="mt-auto inline-block bg-gradient-to-r from-yellow-700 to-yellow-800 text-white px-6 py-2.5 rounded-full shadow-md hover:shadow-lg hover:from-yellow-800 hover:to-yellow-900 transition-all duration-300 ease-in-out"
-                  >
-                    Learn More & Apply
-                  </Link>
-                )}
-              </div>
             </div>
-          ))}
-        </div>
-      </section>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-zonta-burgundy mb-4">
+                The Zonta Club of Naples Makes History
+              </h2>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                On November 7, 2019, a Memorial Scholarship Endowed Fund was
+                established at Florida Gulf Coast University in the names of two
+                past Zontians, Helen “Honey” Koenig Gardiner and Sally Sitta, and
+                The Zonta Club of Naples in the amount of{" "}
+                <strong>$25,000</strong>.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                We believe that investing in women’s education is investing in the
+                future of our community, and the world. Explore our scholarship
+                opportunities below and apply to join the impact.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {/* Footer CTA */}
-      <section className="py-14 px-4 text-center">
-        <p className="max-w-3xl mx-auto text-gray-700 mb-6">
-          Have questions about eligibility, deadlines or the application process? Reach out to our Scholarship Chair – we’re here to help you navigate and succeed.
-        </p>
-        <Link
-          to="/contact"
-          className="bg-yellow-800 text-white px-6 py-3 rounded-full hover:bg-yellow-900 transition"
-        >
-          Contact Us
-        </Link>
-      </section>
-    </div>
+        {/* Scholarship Cards */}
+        <section className="mb-12">
+          <h3 className="text-3xl font-bold text-center text-white mb-6">
+            Explore Our Scholarship Opportunities
+          </h3>
+          <div className="w-24 h-1 bg-zonta-gold mx-auto mb-8 rounded-full" />
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {scholarships.map((s, i) => (
+              <div
+                key={i}
+                className="bg-white/95 backdrop-blur rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
+              >
+                <img
+                  src={s.img}
+                  alt={s.title}
+                  className="w-full h-48 object-cover"
+                />
+
+                <div className="p-6 flex flex-col flex-grow">
+                  <h4 className="text-xl font-semibold text-zonta-burgundy mb-2">
+                    {s.title}
+                  </h4>
+                  <p className="text-gray-700 mb-4 flex-grow">{s.desc}</p>
+
+                  {s.externalLink ? (
+                    <a
+                      href={s.externalLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto inline-block bg-gradient-to-r from-yellow-700 to-yellow-800 text-white px-6 py-2.5 rounded-full shadow-md hover:shadow-lg hover:from-yellow-800 hover:to-yellow-900 transition-all duration-300 text-sm font-semibold text-center"
+                    >
+                      Learn More &amp; Apply
+                    </a>
+                  ) : (
+                    <Link
+                      to={s.link}
+                      className="mt-auto inline-block bg-gradient-to-r from-yellow-700 to-yellow-800 text-white px-6 py-2.5 rounded-full shadow-md hover:shadow-lg hover:from-yellow-800 hover:to-yellow-900 transition-all duration-300 text-sm font-semibold text-center"
+                    >
+                      Learn More &amp; Apply
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Footer CTA */}
+        <section className="text-center">
+          <p className="max-w-3xl mx-auto text-white/90 mb-6">
+            Have questions about eligibility, deadlines, or the application
+            process? Reach out to our Scholarship Chair – we’re here to help you
+            navigate and succeed.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-full font-semibold transition-colors duration-200"
+          >
+            Contact Us
+          </Link>
+        </section>
+      </div>
+    </main>
   );
 }
