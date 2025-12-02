@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { eventAPI } from '../utils/apiService';
+import EventRsvpButton from './EventRsvpForm';
 
 function EventsList() {
     const [events, setEvents] = useState([]);
@@ -202,6 +203,15 @@ function EventsList() {
                                                 <span>Max {event.maxAttendees} attendees</span>
                                             </div>
                                         )}
+                                    </div>
+
+                                    {/* RSVP Button */}
+                                    <div className="mt-4 pt-4 border-t border-gray-200">
+                                        <EventRsvpButton 
+                                            eventId={event._id}
+                                            eventTitle={event.title}
+                                            isRsvped={false}
+                                        />
                                     </div>
                                 </div>
                             </div>

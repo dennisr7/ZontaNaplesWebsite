@@ -53,13 +53,21 @@ export const eventAPI = {
 
     //protected
     createEvent: async (data) => {
-        const response = await api.post('/api/events', data);
+        const response = await api.post('/api/events', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     },
 
     //protected
     updateEvent: async (id, data) => {
-        const response = await api.put(`/api/events/${id}`, data);
+        const response = await api.put(`/api/events/${id}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     },
 
@@ -114,6 +122,13 @@ export const authAPI = {
     logout: async () => {
         const response = await api.post('/api/auth/logout');
         localStorage.removeItem('token');
+        return response.data;
+    }
+};
+
+export const contactAPI = {
+    submitContactForm: async (data) => {
+        const response = await api.post('/api/contact', data);
         return response.data;
     }
 };

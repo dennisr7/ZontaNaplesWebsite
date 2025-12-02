@@ -1,5 +1,60 @@
 // src/pages/Membership.jsx
+import { useState } from 'react';
+import { memberAPI } from '../utils/apiService';
+
 export default function Membership() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    reason: ''
+  });
+  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const result = await memberAPI.submitApplication(formData);
+      console.log('Success:', result);
+      setSuccess(true);
+      
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        reason: ''
+      });
+
+      // Scroll to success message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error('Error:', err);
+      setError(
+        err.response?.data?.error || 
+        err.response?.data?.errors?.join(', ') ||
+        'Something went wrong. Please try again.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="relative min-h-screen pt-32 px-6 flex flex-col items-center text-center overflow-hidden">
       {/* Gradient background matching other pages */}
@@ -105,145 +160,103 @@ export default function Membership() {
           </p>
         </div>
 
-        {/* Enhanced Membership Application Form */}
+        {/* Simplified Membership Application Form */}
         <div className="bg-white/95 backdrop-blur rounded-2xl p-8 shadow-xl">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Membership Application</h2>
-          <p className="text-gray-600 mb-6">Please complete all sections of this application</p>
+          <p className="text-gray-600 mb-6">Tell us about yourself — we'd love to get to know you!</p>
 
-          <form className="space-y-8 text-left">
-            {/* Personal Information */}
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {success && (
+            <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded text-left">
+              <div className="flex items-center">
+                <svg className="w-6 h-6 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Name</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                  <input type="date" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+                  <p className="font-semibold">Application Submitted Successfully!</p>
+                  <p className="text-sm mt-1">Thank you for your interest in Zonta Club of Naples. Our membership chair will contact you within 3-5 business days to discuss next steps.</p>
                 </div>
               </div>
             </div>
+          )}
+          
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded text-left">
+              <div className="flex items-center">
+                <svg className="w-6 h-6 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <p>{error}</p>
+              </div>
+            </div>
+          )}
 
-            {/* Contact Information */}
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                  <input type="email" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                  <input type="tel" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-                  <input type="text" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
-                </div>
+          <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                <input 
+                  type="text" 
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                  minLength={2}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" 
+                />
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                <input 
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                  minLength={2}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" 
+                />
               </div>
             </div>
 
-            {/* Membership Information */}
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Membership Information</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Membership Type *</label>
-                  <select className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-                    <option value="">Select membership type</option>
-                    <option value="new">New Member - $170 (first year)</option>
-                    <option value="renewing">Renewing Member - $148 (annual)</option>
-                    <option value="transfer">Transferring Member</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">How did you hear about Zonta Club of Naples?</label>
-                  <select className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-                    <option value="">Select an option</option>
-                    <option value="friend">Friend/Colleague</option>
-                    <option value="event">Community Event</option>
-                    <option value="website">Website/Social Media</option>
-                    <option value="news">News Article</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Previous Zonta Membership?</label>
-                  <div className="flex space-x-4">
-                    <label className="flex items-center">
-                      <input type="radio" name="previous_member" value="yes" className="mr-2" />
-                      Yes
-                    </label>
-                    <label className="flex items-center">
-                      <input type="radio" name="previous_member" value="no" className="mr-2" />
-                      No
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="border-b border-gray-200 pb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Additional Information</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Why are you interested in joining Zonta? *</label>
-                  <textarea rows="4" className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" required></textarea>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Are you interested in serving on any specific committees?</label>
-                  <div className="space-y-2">
-                    {['Service', 'Advocacy', 'Membership', 'Fundraising', 'Scholarship', 'Public Relations'].map(committee => (
-                      <label key={committee} className="flex items-center">
-                        <input type="checkbox" className="mr-2" />
-                        {committee}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Agreement */}
             <div>
-              <label className="flex items-start">
-                <input type="checkbox" className="mr-2 mt-1" required />
-                <span className="text-sm text-gray-700">
-                  I understand that membership requires payment of dues ($170 for first year, $148 for annual renewal) 
-                  and active participation in club activities. I agree to abide by the bylaws and policies of Zonta International 
-                  and Zonta Club of Naples. *
-                </span>
-              </label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+              <input 
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600" 
+              />
+            </div>
+
+            <div>
+              <label htmlFor="reason" className="block text-sm font-medium text-gray-700 mb-1">Why are you interested in joining Zonta? *</label>
+              <textarea 
+                id="reason"
+                name="reason"
+                value={formData.reason}
+                onChange={handleChange}
+                required
+                minLength={20}
+                rows={5}
+                placeholder="Please tell us about your interest in Zonta and what you hope to contribute to our mission (minimum 20 characters)"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-600"
+              ></textarea>
+              <p className="text-sm text-gray-500 mt-1">
+                {formData.reason.length}/20 characters minimum
+              </p>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
+              disabled={loading}
+              className="w-full bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
             >
-              Submit Membership Application
+              {loading ? 'Submitting...' : 'Submit Membership Application'}
             </button>
 
             <p className="text-center text-sm text-gray-600">

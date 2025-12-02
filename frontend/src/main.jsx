@@ -22,6 +22,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import EventsPage from "./pages/Events.jsx";
 import ScholarshipsHome from "./pages/ScholarshipsHome.jsx";
+import ScholarshipApply from "./pages/ScholarshipApply.jsx";
 
 import YWPAApply from "./pages/YWPAApply.jsx";
 import STEMApply from "./pages/STEMApply.jsx";
@@ -32,6 +33,7 @@ import WhoWeAre from "./pages/WhoWeAre.jsx";
 import DonateSuccess from "./pages/DonateSuccess.jsx";
 import ShopSuccess from "./pages/ShopSuccess.jsx";
 import ProductCheckout from "./pages/ProductCheckout.jsx";
+import MembershipPaymentSuccess from "./pages/MembershipPaymentSuccess.jsx";
 
 import NotFound from "./pages/NotFound.jsx";
 
@@ -41,6 +43,8 @@ import NotFound from "./pages/NotFound.jsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import ScholarshipManagement from "./pages/admin/ScholarshipManagement.jsx";
 import ScholarshipDetail from "./pages/admin/ScholarshipDetail.jsx";
+import ScholarshipListingManagement from "./pages/admin/ScholarshipListingManagement.jsx";
+import ScholarshipListingForm from "./pages/admin/ScholarshipListingForm.jsx";
 import EventManagement from "./pages/admin/EventManagement.jsx";
 import EventCreate from "./pages/admin/EventCreate.jsx";
 import EventEdit from "./pages/admin/EventEdit.jsx";
@@ -70,10 +74,12 @@ createRoot(document.getElementById("root")).render(
           <Route path="/shop" element={<Shop />} />
           <Route path="/shop/checkout/:id" element={<ProductCheckout />} />
           <Route path="/shop/success" element={<ShopSuccess />} />
+          <Route path="/membership/payment-success" element={<MembershipPaymentSuccess />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/scholarships" element={<ScholarshipsHome />} />
+          <Route path="/scholarship-apply" element={<ScholarshipApply />} />
           <Route path="/scholarships/ywpa-apply" element={<YWPAApply />} />
           <Route path="/scholarships/stem-apply" element={<STEMApply />} />
           <Route path="/scholarships/fgcu-apply" element={<FGCUApply />} />
@@ -84,6 +90,9 @@ createRoot(document.getElementById("root")).render(
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/scholarships" element={<ScholarshipManagement />} />
           <Route path="/admin/scholarships/:id" element={<ScholarshipDetail />} />
+          <Route path="/admin/scholarship-listings" element={<ScholarshipListingManagement />} />
+          <Route path="/admin/scholarship-listings/create" element={<ScholarshipListingForm />} />
+          <Route path="/admin/scholarship-listings/edit/:id" element={<ScholarshipListingForm />} />
           <Route path="/admin/events" element={<EventManagement />} />
           <Route path="/admin/events/create" element={<EventCreate />} />
           <Route path="/admin/events/edit/:id" element={<EventEdit />} />

@@ -33,7 +33,7 @@ const memberSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'approved', 'rejected'],
+        enum: ['pending', 'approved', 'rejected', 'active'],
         default: 'pending'
     },
     submittedAt: {
@@ -42,7 +42,42 @@ const memberSchema = new mongoose.Schema({
     },
     notes: {
         type: String
-    }
+    },
+    // Payment and membership tracking fields
+    joinDate: {
+        type: Date
+    },
+    membershipRenewalDate: {
+        type: Date
+    },
+    lastPaymentDate: {
+        type: Date
+    },
+    lastPaymentAmount: {
+        type: Number
+    },
+    renewalReminderSent: {
+        type: Boolean,
+        default: false
+    },
+    paymentHistory: [{
+        amount: {
+            type: Number,
+            required: true
+        },
+        date: {
+            type: Date,
+            default: Date.now
+        },
+        stripeSessionId: {
+            type: String
+        },
+        type: {
+            type: String,
+            enum: ['initial', 'renewal'],
+            required: true
+        }
+    }]
 }, { timestamps: true });
 
 //index1 

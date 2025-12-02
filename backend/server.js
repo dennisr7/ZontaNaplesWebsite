@@ -3,10 +3,15 @@ import cors from 'cors';
 import memberRoutes from './src/routes/members.js';
 import eventRoutes from './src/routes/events.js';
 import scholarshipRoutes from './src/routes/scholarships.js';
+import scholarshipListingRoutes from './src/routes/scholarshipListings.js';
+import contactRoutes from './src/routes/contact.js';
 import authRoutes from './src/routes/auth.js';
 import donationRoutes, { handleWebhook } from './src/routes/donations.js';
 import productRoutes, { handleProductWebhook } from './src/routes/products.js';
+import membershipPaymentRoutes from './src/routes/membershipPayments.js';
+import { handleMembershipWebhook } from './src/controllers/membershipPaymentController.js';
 import { connectDB } from './src/config/database.js';
+import { initializeScheduler } from './src/utils/scheduler.js';
 
 connectDB();
 const app = express();
@@ -23,10 +28,12 @@ const corsOptions = {
 // Apply CORS to webhook routes first, then raw body parser
 app.use('/api/donations/webhook', cors(), express.raw({ type: 'application/json' }));
 app.use('/api/products/webhook', cors(), express.raw({ type: 'application/json' }));
+app.use('/api/membership-payments/webhook', cors(), express.raw({ type: 'application/json' }));
 
 // Register webhook routes
 app.post('/api/donations/webhook', handleWebhook);
 app.post('/api/products/webhook', handleProductWebhook);
+app.post('/api/membership-payments/webhook', handleMembershipWebhook);
 
 // CORS and body parsing for all other routes
 app.use(cors(corsOptions));
@@ -70,11 +77,17 @@ app.use('/api/events', eventRoutes);
 
 app.use('/api/scholarship', scholarshipRoutes);
 
+app.use('/api/scholarship-listings', scholarshipListingRoutes);
+
+app.use('/api/contact', contactRoutes);
+
 app.use('/api/auth', authRoutes);
 
 app.use('/api/donations', donationRoutes);
 
 app.use('/api/products', productRoutes);
+
+app.use('/api/membership-payments', membershipPaymentRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ 
@@ -104,6 +117,9 @@ const server = app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log(`Email configured: ${process.env.EMAIL_USER}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    
+    // Initialize scheduled tasks (cron jobs)
+    initializeScheduler();
 });
 
 const gracefulShutdown = async (signal) => {
