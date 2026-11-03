@@ -12,7 +12,7 @@ This page describes the external interface of the backend: the HTTP/JSON API it 
 ## Conventions
 
 - **Content type:** requests are JSON (`Content-Type: application/json`) unless marked *multipart*. Responses are JSON unless marked *CSV* or *file*.
-- **Authentication:** routes marked 🔒 require `Authorization: Bearer <token>`, where the token comes from `POST /api/auth/login`. Invalid, expired, or unknown-user tokens return `401`. A request to a 🔒 route with **no** `Bearer` header is not answered by the middleware and may hang until the client times out (known issue).
+- **Authentication:** routes marked 🔒 require `Authorization: Bearer <token>`, where the token comes from `POST /api/auth/login`. Invalid, expired, or unknown-user tokens return `401`. A 🔒 route called with no `Bearer` header returns `401`.
 - **Success envelope** (most routes): `{ "success": true, "message"?: string, "count"?: number, "data": ... }`
 - **Error envelope:** `{ "success": false, "error": "message" }`. Validation failures add `"errors": [...]` where the controller provides them. Donation routes return `{ "error": "message" }` without `success`. Unknown routes return `404 { "error": "Route not found", "path": "..." }`. Unhandled errors return `{ "error": "..." }` (plus `stack` when `NODE_ENV=development`).
 - **IDs** are MongoDB ObjectIds (24-character hex strings).
@@ -118,9 +118,8 @@ Errors: `400` no files, duplicate email, invalid file type/size/count/field name
 ### `GET /api/scholarship/download-form`
 Returns the application form as a **file** download; `404` if missing.
 
-### Review endpoints
+### Review endpoints 🔒
 `GET /api/scholarship` (query `status?`; `{ success, count, data }`), `GET /api/scholarship/:id`, `PUT /api/scholarship/:id` (input `{ status?, notes? }`).
-⚠️ In the current code these three routes are **not** wrapped in `protect`, although they are intended for admins.
 
 ## Scholarship listings: `/api/scholarship-listings`
 
@@ -133,7 +132,7 @@ Listing statuses: `active`, `draft`, `archived`, `expired`.
 | POST | `/admin` 🔒 | *multipart*. Fields: `title`, `description` (≤ 2000), `shortDescription` (≤ 300), `amount` (≥ 0), `deadline`, `eligibility` (≤ 1000), `learnMoreUrl`, `status`, `slug`, `isFeatured`, files `image` (**required**) and `attachment`. `201`; `400` for missing image or duplicate slug |
 | PUT | `/admin/:id` 🔒 | Same fields, optional |
 | DELETE | `/admin/:id` 🔒 | `{ success, message }`; also deletes Cloudinary files |
-| GET | `/admin/stats` 🔒 | Aggregate counts (currently shadowed by `/:identifier`; see known issues) |
+| GET | `/admin/stats` 🔒 | Aggregate counts |
 
 ## Products (shop): `/api/products`
 
@@ -203,9 +202,7 @@ Input: `{ "name": string, "email": string, "subject": string, "message": string 
 
 ## Known issues
 
-Documented for transparency; please file issues or pull requests.
+Please file issues or pull requests.
 
-- `GET/PUT /api/scholarship` review routes lack `protect`.
-- `GET /api/scholarship-listings/admin/stats` is declared after `/:identifier`, so it may be matched as an identifier.
-- `protect` does not respond when no `Authorization: Bearer` header is sent.
 - The `DELETE /api/events/:id` response key is spelled `messsage`.
+- `GET /api/scholarship/download-form` returns `404` unless a form file exists at `backend/src/forms/test-form.pdf` (not included in the repository).

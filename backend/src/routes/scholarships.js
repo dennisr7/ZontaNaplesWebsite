@@ -8,6 +8,7 @@ import  {
     testScholarshipEndpoint, 
  } from '../controllers/scholarshipController.js';
 
+import { protect } from '../middleware/authMiddleware.js';
 import { uploadScholarshipDocs, handleMulterErr } from '../middleware/fileUpload.js';
 
 const router = express.Router();
@@ -20,9 +21,9 @@ router.get('/download-form', downloadScholarshipForm);
 router.post('/apply', uploadScholarshipDocs, handleMulterErr, submitScholarshipApplication);
 
 //protected admin only routes
-router.get('/', getAllScholarships);
-router.get('/:id', getScholarship);
-router.put('/:id', updateScholarship);
+router.get('/', protect, getAllScholarships);
+router.get('/:id', protect, getScholarship);
+router.put('/:id', protect, updateScholarship);
 
 
 export default router;

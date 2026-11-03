@@ -34,13 +34,15 @@ export const protect = async (req, res, next) => {
             // Attach user to request
             req.user = user;
             
-            console.log("User authenticated:", user.email, user.role);
-            next();
+            return next();
 
         } catch (error) {
             console.error("Token verification failed:", error);
             return res.status(401).json({ success: false, error: 'Not authorized, token failed' });
         }
     }
+
+    // no Bearer token was sent at all
+    return res.status(401).json({ success: false, error: 'Not authorized, no token provided' });
 };
 

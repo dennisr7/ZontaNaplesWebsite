@@ -1,6 +1,11 @@
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { sendScholarshipApplicationEmail } from '../utils/emailService.js';
 import Scholarship from '../models/scholarship.js';
 import cloudinary from '../config/cloudinary.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const submitScholarshipApplication = async (req, res, next) => {
     try {

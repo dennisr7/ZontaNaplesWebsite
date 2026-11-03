@@ -26,9 +26,19 @@ Do not open a public issue for vulnerabilities. Use GitHub's "Report a vulnerabi
 ```bash
 git checkout -b your-feature-name
 # make changes
-cd frontend && npm run lint
+cd backend && npm run lint && npm test
+cd ../frontend && npm run lint && npm run build
 git commit -am "Describe the change"
 git push origin your-feature-name
 ```
 
-Then open a pull request with a descriptive title. Update the documentation in `docs/` if you change an endpoint, request body, response or environment variable.
+Then open a pull request with a descriptive title. CI (lint, tests, build, `npm audit`, CodeQL) must pass.
+
+### Requirements for acceptable contributions
+
+- **Coding standard:** ESLint is the style and static-analysis standard (`backend/eslint.config.js`, `frontend/eslint.config.js`). Use ES modules, `async/await`, and follow the existing file layout (routes → controllers → models).
+- **Tests:** any new or changed functionality (a new endpoint, validation rule or middleware) should include an automated test in `backend/src/tests/*.test.js` (Node's built-in `node:test` runner, run with `npm test`).
+- **Documentation:** update `docs/` (and `CHANGELOG.md`) when you change an endpoint, request or response, or environment variable.
+- **Security:** never commit secrets; protect admin routes with the `protect` middleware.
+- **Licensing:** contributions are accepted under the project's GPL-3.0 license.
+- **Review:** at least one maintainer must review a pull request before it is merged.

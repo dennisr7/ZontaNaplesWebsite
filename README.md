@@ -23,6 +23,7 @@ Features: membership applications and dues payment, scholarship listings and app
 - [Getting started](docs/getting-started.md): install, configure, run
 - [API reference](docs/api-reference.md): every HTTP endpoint, with inputs and outputs
 - [Configuration reference](docs/configuration.md): environment variables, file uploads, emails, scheduled jobs
+- [Security policy](SECURITY.md) and [changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md): how to report bugs and make comments (in English)
 
 ## Quick start
@@ -46,11 +47,18 @@ cp .env.example .env
 npm run dev
 ```
 
-Frontend scripts: `npm run dev`, `npm run build`, `npm run preview`, `npm run lint`.
+Backend scripts: `npm start`, `npm test`, `npm run lint`. Frontend scripts: `npm run dev`, `npm run build`, `npm run preview`, `npm run lint`.
 
 ## Reporting bugs and comments
 
 Please open a [GitHub issue](https://github.com/dennisr7/ZontaNaplesWebsite/issues/new/choose). Issues, pull requests and code comments are accepted **in English**. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Testing
+
+```bash
+cd backend && npm test      # automated tests (node:test)
+```
+CI also runs ESLint, the frontend build, `npm audit` and CodeQL.
 
 ## License
 

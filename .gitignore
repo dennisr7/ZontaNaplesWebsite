@@ -62,3 +62,6 @@ dist-ssr
 /tailwind.config.js
 /postcss.config.cjs
 /eslint.config.js
+# Local Stripe CLI binary (download from https://stripe.com/docs/stripe-cli)
+stripe.exe
+stripe
