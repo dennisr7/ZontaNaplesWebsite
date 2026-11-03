@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import {
     getAllProducts,
     getProductById,
@@ -19,11 +20,12 @@ import { protect } from '../middleware/authMiddleware.js';
 import { uploadProductImage, handleMulterErr } from '../middleware/fileUpload.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 // Public routes
 router.get('/', getAllProducts);
 router.get('/categories', getCategories);
-router.post('/checkout', createProductCheckout);
+router.post('/checkout', strictLimiter, createProductCheckout);
 router.get('/session/:sessionId', getOrderBySessionId);
 router.post('/cancel/:orderId', cancelOrder);
 

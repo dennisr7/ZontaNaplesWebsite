@@ -2,13 +2,26 @@ import Product from '../models/product.js';
 import Order from '../models/order.js';
 import Stripe from 'stripe';
 import cloudinary from '../config/cloudinary.js';
+import { str, oneOf, pick, positiveInt, toDate } from '../utils/sanitize.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const PRODUCT_CATEGORIES = ['Apparel', 'Accessories', 'Books', 'Home & Garden', 'Jewelry', 'Art', 'Other'];
+const PRODUCT_STATUSES = ['active', 'draft', 'archived'];
+const ORDER_STATUSES = ['pending', 'completed', 'failed'];
+const SORT_FIELDS = ['createdAt', '-createdAt', 'price', '-price', 'name', '-name', 'totalSold', '-totalSold'];
+const PRODUCT_FIELDS = [
+    'name', 'description', 'shortDescription', 'price', 'inventory', 'trackInventory',
+    'allowBackorder', 'sku', 'category', 'status', 'weight', 'weightUnit', 'requiresShipping', 'slug'
+];
 
 // this gets the products for public view only showing active products
 export const getAllProducts = async (req, res) => {
     try {
-        const { category, status, search, sortBy = '-createdAt' } = req.query;
+        const category = oneOf(req.query.category, PRODUCT_CATEGORIES);
+        const status = oneOf(req.query.status, PRODUCT_STATUSES);
+        const search = str(req.query.search);
+        const sortBy = oneOf(req.query.sortBy, SORT_FIELDS) || '-createdAt';
         
         const query = {};
         
@@ -85,7 +98,7 @@ export const getProductById = async (req, res) => {
 export const createProduct = async (req, res) => {
     try {
         // Handle image upload if file is present
-        const productData = { ...req.body };
+        const productData = pick(req.body, PRODUCT_FIELDS);
         
         if (req.file) {
             // Add the uploaded image to the images array
@@ -133,7 +146,7 @@ export const createProduct = async (req, res) => {
 // if we want to update product details from admin dashboard
 export const updateProduct = async (req, res) => {
     try {
-        const productData = { ...req.body };
+        const productData = pick(req.body, PRODUCT_FIELDS);
         
         // Handle new image upload
         if (req.file) {
@@ -256,7 +269,10 @@ export const createProductCheckout = async (req, res) => {
     try {
         // quantity defaults to 1 if not provided
         // but once again this is info a user would fill out in the frontend
-        const { productId, quantity = 1, customerEmail, customerName } = req.body;
+        const productId = str(req.body.productId);
+        const customerEmail = str(req.body.customerEmail);
+        const customerName = str(req.body.customerName);
+        const quantity = positiveInt(req.body.quantity, 1, 100);
         
         // Validate input
         if (!productId || !customerEmail || !customerName) {
@@ -589,7 +605,11 @@ export const getCategories = async (req, res) => {
 // Get all orders with filtering
 export const getAllOrders = async (req, res) => {
     try {
-        const { status, startDate, endDate, page = 1, limit = 50 } = req.query;
+        const status = oneOf(req.query.status, ORDER_STATUSES);
+        const startDate = toDate(req.query.startDate);
+        const endDate = toDate(req.query.endDate);
+        const page = positiveInt(req.query.page, 1);
+        const limit = positiveInt(req.query.limit, 50, 200);
         
         const query = {};
         
@@ -597,16 +617,16 @@ export const getAllOrders = async (req, res) => {
         
         if (startDate || endDate) {
             query.createdAt = {};
-            if (startDate) query.createdAt.$gte = new Date(startDate);
-            if (endDate) query.createdAt.$lte = new Date(endDate);
+            if (startDate) query.createdAt.$gte = startDate;
+            if (endDate) query.createdAt.$lte = endDate;
         }
         
-        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const skip = (page - 1) * limit;
         
         const orders = await Order.find(query)
             .populate('productId', 'name images')
             .sort({ createdAt: -1 })
-            .limit(parseInt(limit))
+            .limit(limit)
             .skip(skip);
         
         const total = await Order.countDocuments(query);
@@ -616,8 +636,8 @@ export const getAllOrders = async (req, res) => {
             orders,
             pagination: {
                 total,
-                page: parseInt(page),
-                pages: Math.ceil(total / parseInt(limit))
+                page,
+                pages: Math.ceil(total / limit)
             }
         });
     } catch (error) {
@@ -712,7 +732,9 @@ export const getOrderStats = async (req, res) => {
 // Export orders to CSV
 export const exportOrders = async (req, res) => {
     try {
-        const { status, startDate, endDate } = req.query;
+        const status = oneOf(req.query.status, ORDER_STATUSES);
+        const startDate = toDate(req.query.startDate);
+        const endDate = toDate(req.query.endDate);
         
         const query = {};
         
@@ -720,8 +742,8 @@ export const exportOrders = async (req, res) => {
         
         if (startDate || endDate) {
             query.createdAt = {};
-            if (startDate) query.createdAt.$gte = new Date(startDate);
-            if (endDate) query.createdAt.$lte = new Date(endDate);
+            if (startDate) query.createdAt.$gte = startDate;
+            if (endDate) query.createdAt.$lte = endDate;
         }
         
         const orders = await Order.find(query)

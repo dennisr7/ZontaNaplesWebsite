@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import {
     submitContactForm,
     getAllContacts,
@@ -9,9 +10,10 @@ import {
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 // Public route - submit contact form
-router.post('/', submitContactForm);
+router.post('/', strictLimiter, submitContactForm);
 
 // Admin routes - protected
 router.get('/admin', protect, getAllContacts);

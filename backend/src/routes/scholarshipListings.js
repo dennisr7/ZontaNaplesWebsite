@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { uploadMultipleFiles } from '../middleware/fileUpload.js';
 import {
@@ -11,6 +12,7 @@ import {
 } from '../controllers/scholarshipListingController.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 // Public routes
 router.get('/', getAllScholarshipListings);

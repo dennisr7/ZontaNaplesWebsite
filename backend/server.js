@@ -11,6 +11,7 @@ import productRoutes, { handleProductWebhook } from './src/routes/products.js';
 import membershipPaymentRoutes from './src/routes/membershipPayments.js';
 import { handleMembershipWebhook } from './src/controllers/membershipPaymentController.js';
 import { connectDB } from './src/config/database.js';
+import { webhookLimiter, apiLimiter } from './src/middleware/rateLimit.js';
 import { initializeScheduler } from './src/utils/scheduler.js';
 
 connectDB();
@@ -26,14 +27,14 @@ const corsOptions = {
 
 // Stripe webhooks need raw body - MUST come before any body parsing middleware
 // Apply CORS to webhook routes first, then raw body parser
-app.use('/api/donations/webhook', cors(), express.raw({ type: 'application/json' }));
-app.use('/api/products/webhook', cors(), express.raw({ type: 'application/json' }));
-app.use('/api/membership-payments/webhook', cors(), express.raw({ type: 'application/json' }));
+app.use('/api/donations/webhook', webhookLimiter, cors(), express.raw({ type: 'application/json' }));
+app.use('/api/products/webhook', webhookLimiter, cors(), express.raw({ type: 'application/json' }));
+app.use('/api/membership-payments/webhook', webhookLimiter, cors(), express.raw({ type: 'application/json' }));
 
 // Register webhook routes
-app.post('/api/donations/webhook', handleWebhook);
-app.post('/api/products/webhook', handleProductWebhook);
-app.post('/api/membership-payments/webhook', handleMembershipWebhook);
+app.post('/api/donations/webhook', webhookLimiter, handleWebhook);
+app.post('/api/products/webhook', webhookLimiter, handleProductWebhook);
+app.post('/api/membership-payments/webhook', webhookLimiter, handleMembershipWebhook);
 
 // CORS and body parsing for all other routes
 app.use(cors(corsOptions));
@@ -50,7 +51,7 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 // useless
-app.get('/', (req, res) => {
+app.get('/', apiLimiter, (req, res) => {
     res.json({
         message: "Welcome to Zonta Club of Naples API",
         version: "1.0.0",
@@ -63,7 +64,7 @@ app.get('/', (req, res) => {
 
 // also useless
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', apiLimiter, (req, res) => {
     res.json({ 
         status: 'OK', 
         timestamp: new Date().toISOString() 
