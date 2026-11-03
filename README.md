@@ -1,5 +1,7 @@
 # Zonta Club of Naples Website
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16299/badge)](https://www.bestpractices.dev/projects/16299)
+
 > **Disclaimer:** This is **not** the official Zonta Club of Naples website. It is a student project built for a university class. It is not affiliated with, endorsed by, or operated by Zonta International or the Zonta Club of Naples.
 
 **Group members:** Dennis Ray, Brian Velazquez, Esmir Ramirez, Joshua Martin, Suhaib Farah

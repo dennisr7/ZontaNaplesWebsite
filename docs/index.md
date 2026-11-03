@@ -5,6 +5,8 @@ title: Home
 
 # Zonta Naples Website: Unofficial Class Project
 
+<a href="https://www.bestpractices.dev/projects/16299"><img src="https://www.bestpractices.dev/projects/16299/badge" alt="OpenSSF Best Practices"></a>
+
 > **This is not the official Zonta Club of Naples website.** It is a student project created for a class. It is not affiliated with, endorsed by, or operated by Zonta International or the Zonta Club of Naples. For the real organization, please visit its official channels.
 
 This site documents the software in the [dennisr7/ZontaNaplesWebsite](https://github.com/dennisr7/ZontaNaplesWebsite) repository, built by Dennis Ray, Brian Velazquez, Esmir Ramirez, Joshua Martin and Suhaib Farah.
