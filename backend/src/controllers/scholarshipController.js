@@ -4,12 +4,18 @@ import { fileURLToPath } from 'url';
 import { sendScholarshipApplicationEmail } from '../utils/emailService.js';
 import Scholarship from '../models/scholarship.js';
 import cloudinary from '../config/cloudinary.js';
+import { str, oneOf } from '../utils/sanitize.js';
+
+const SCHOLARSHIP_STATUSES = ['pending', 'under_review', 'approved', 'rejected'];
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const submitScholarshipApplication = async (req, res, next) => {
     try {
-        const { firstName, lastName, email, phone } = req.body;
+        const firstName = str(req.body.firstName);
+        const lastName = str(req.body.lastName);
+        const email = str(req.body.email);
+        const phone = str(req.body.phone);
 
         // uploaded files are accessed
         // since the request is a multipart/form-data, multer middleware processes the files before this controller
@@ -104,7 +110,7 @@ export const submitScholarshipApplication = async (req, res, next) => {
 // this function gets all scholarship applications, with optional filtering by status on the admin dashboard
 export const getAllScholarships = async (req, res, next) => {
     try {
-        const { status } = req.query;
+        const status = oneOf(req.query.status, SCHOLARSHIP_STATUSES);
         
         const query = {};
         if(status) {

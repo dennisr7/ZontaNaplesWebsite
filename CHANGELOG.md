@@ -2,6 +2,13 @@
 
 All notable changes are documented here. The project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Security
+- Added rate limiting (`express-rate-limit`): 300 requests / 15 min per IP on API routes, 20 / 15 min on login, contact, applications, RSVP and checkout, and a separate limit on Stripe webhooks.
+- Query, path and body values are coerced to plain strings or allow-listed values before reaching MongoDB queries (NoSQL operator injection / type confusion). Product create/update only accepts known fields.
+- Replaced a backtracking email regex (ReDoS) with a linear-time check.
+
 ## [1.0.0] - 2026-11-03
 
 ### Added

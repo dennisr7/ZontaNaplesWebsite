@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import {
     createCheckoutSession,
     handleWebhook,
@@ -13,9 +14,10 @@ import {
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 // Public routes
-router.post('/create-checkout', createCheckoutSession);
+router.post('/create-checkout', strictLimiter, createCheckoutSession);
 router.get('/session/:sessionId', getDonationBySessionId);
 router.post('/cancel/:donationId', cancelDonation);
 

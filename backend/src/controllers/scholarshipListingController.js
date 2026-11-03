@@ -1,10 +1,11 @@
+import { str, oneOf } from '../utils/sanitize.js';
 import ScholarshipListing from '../models/scholarshipListing.js';
 import cloudinary from '../config/cloudinary.js';
 
 // Get all scholarship listings (public - for display on scholarship page)
 export const getAllScholarshipListings = async (req, res) => {
     try {
-        const { status } = req.query;
+        const status = oneOf(req.query.status, ['active', 'draft', 'archived', 'expired']);
         
         let query = {};
         if (status) {
@@ -34,7 +35,7 @@ export const getAllScholarshipListings = async (req, res) => {
 // Get single scholarship listing by ID or slug
 export const getScholarshipListingById = async (req, res) => {
     try {
-        const { identifier } = req.params;
+        const identifier = str(req.params.identifier);
         
         // Try to find by ID first, then by slug
         let scholarship = await ScholarshipListing.findById(identifier);

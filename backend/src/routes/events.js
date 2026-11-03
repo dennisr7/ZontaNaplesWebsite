@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import {
     getEvents,
     getEvent,
@@ -14,6 +15,7 @@ import { protect } from '../middleware/authMiddleware.js';
 import { uploadEventImage, handleMulterErr } from '../middleware/fileUpload.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 router.get('/test', testEventEndpoint);
 router.get('/', getEvents);
@@ -23,7 +25,7 @@ router.put('/:id', protect, uploadEventImage, handleMulterErr, updateExistingEve
 router.delete('/:id', protect, deleteExistingEvent);
 
 // RSVP routes
-router.post('/:id/rsvp', rsvpToEvent); // Public - anyone can RSVP
+router.post('/:id/rsvp', strictLimiter, rsvpToEvent); // Public - anyone can RSVP
 router.get('/:id/rsvps', protect, getEventRsvps); // Protected - admin only
 
 export default router;

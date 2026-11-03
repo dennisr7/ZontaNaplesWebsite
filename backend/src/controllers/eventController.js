@@ -1,3 +1,4 @@
+import { isValidEmail } from '../utils/sanitize.js';
 import Event from '../models/event.js';
 import { EVENT_TYPES } from '../models/event.js';
 import cloudinary from '../config/cloudinary.js';
@@ -246,8 +247,7 @@ export const rsvpToEvent = async (req, res, next) => {
         }
 
         // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!isValidEmail(email)) {
             return res.status(400).json({
                 success: false,
                 error: 'Invalid email format'

@@ -1,4 +1,5 @@
 import express from 'express';
+import { apiLimiter, strictLimiter } from '../middleware/rateLimit.js';
 import { 
     submitMembershipApplication,
     getAllMembers,
@@ -9,9 +10,10 @@ import {
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+router.use(apiLimiter);
 
 router.get('/test', testMemberEndpoint);
-router.post('/apply', submitMembershipApplication);
+router.post('/apply', strictLimiter, submitMembershipApplication);
 
 //protected admin only routes
 router.get('/', protect, getAllMembers);
