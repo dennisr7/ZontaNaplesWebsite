@@ -1,238 +1,57 @@
 # Zonta Club of Naples Website
 
-### Group Members: Dennis Ray, Brian Velazquez, Esmir Ramirez, Joshua Martin, Suhaib Farah
+> **Disclaimer:** This is **not** the official Zonta Club of Naples website. It is a student project built for a university class. It is not affiliated with, endorsed by, or operated by Zonta International or the Zonta Club of Naples.
 
-## File Structure
+**Group members:** Dennis Ray, Brian Velazquez, Esmir Ramirez, Joshua Martin, Suhaib Farah
 
-```
-zonta-website/
-├── client/ # Frontend (React + Vite + Tailwind)
-│ ├── public/
-│ │ └── vite.svg
-│ ├── src/
-│ │ ├── components/ # Reusable UI components
-│ │ │ ├── Header.jsx
-│ │ │ ├── Footer.jsx
-│ │ │ ├── Navbar.jsx
-│ │ │ └── DonateButton.jsx
-│ │ ├── pages/ # Page components
-│ │ │ ├── HomePage.jsx
-│ │ │ ├── AboutPage.jsx
-│ │ │ ├── ScholarshipPage.jsx
-│ │ │ ├── MembershipPage.jsx
-│ │ │ └── NotFoundPage.jsx
-│ │ ├── hooks/ # Custom React hooks
-│ │ │ └── useFetch.js
-│ │ ├── utils/
-│ │ │ └── api.js # API client configuration
-│ │ ├── config/
-│ │ │ └── constants.js # App constants & endpoints
-│ │ ├── styles/
-│ │ │ └── global.css
-│ │ ├── App.jsx
-│ │ ├── main.jsx
-│ │ └── index.css
-│ ├── .gitignore
-│ ├── eslint.config.js
-│ ├── index.html
-│ ├── package.json
-│ ├── vite.config.js
-│ └── README.md
-│
-├── server/ # Backend (Express + Node.js)
-│ ├── config/
-│ │ ├── db.js # Database configuration
-│ │ └── env.js # Environment variables
-│ ├── controllers/ # Request handlers
-│ │ ├── memberController.js
-│ │ ├── scholarshipController.js
-│ │ ├── eventController.js
-│ │ └── donationController.js
-│ ├── models/ # Data models/schemas
-│ │ ├── Member.js
-│ │ ├── Scholarship.js
-│ │ ├── Event.js
-│ │ └── Donation.js
-│ ├── routes/ # API routes
-│ │ ├── index.js # Main route aggregator
-│ │ ├── members.js
-│ │ ├── scholarships.js
-│ │ ├── events.js
-│ │ └── donations.js
-│ ├── middleware/ # Custom middleware
-│ │ ├── corsMiddleware.js
-│ │ ├── errorHandler.js
-│ │ └── authMiddleware.js
-│ ├── utils/
-│ │ ├── helpers.js
-│ │ └── validators.js
-│ ├── tests/ # Test files (future)
-│ │ ├── unit/
-│ │ └── integration/
-│ ├── .env.example
-│ ├── .gitignore
-│ ├── app.js # Express app configuration
-│ ├── server.js # Server entry point
-│ ├── package.json
-│ └── README.md
-│
-├── docs/ # Project documentation
-│ ├── SETUP.md # Setup instructions
-│ └── API.md # API documentation
-│
-├── .gitignore # Root gitignore
-├── README.md # Main project overview
-├── CONTRIBUTING.md # Contribution guidelines
-└── package.json # Root package.json (optional)
-```
+📖 **Documentation site (GitHub Pages):** https://dennisr7.github.io/ZontaNaplesWebsite/
 
----
+## What this software is
 
-## Quick Start
+A full-stack web application for a Zonta-style service club:
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Git
+| Part | Stack | Directory |
+|------|-------|-----------|
+| Frontend (public site and admin dashboard) | React 19, Vite, Tailwind CSS | `frontend/` |
+| Backend (REST API) | Node.js, Express 5, MongoDB (Mongoose) | `backend/` |
+| Integrations | Stripe (payments), Cloudinary (uploads), Nodemailer (email) | `backend/src/` |
 
-### Installation
+Features: membership applications and dues payment, scholarship listings and applications, events with RSVPs, donations, a merchandise shop, a contact form, and an admin dashboard.
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd zonta-website
-   ```
+## Documentation
 
-2. **Install dependencies**
-   
-   For the **client**:
-   ```bash
-   cd client
-   npm install
-   ```
-   
-   For the **server**:
-   ```bash
-   cd ../server
-   npm install
-   ```
+- [Getting started](docs/getting-started.md): install, configure, run
+- [API reference](docs/api-reference.md): every HTTP endpoint, with inputs and outputs
+- [Configuration reference](docs/configuration.md): environment variables, file uploads, emails, scheduled jobs
+- [Contributing](CONTRIBUTING.md): how to report bugs and make comments (in English)
 
-3. **Set up environment variables**
-   
-   In the `server` directory, copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Update the values in `.env` as needed.
+## Quick start
 
-4. **Run the development servers**
-   
-   In separate terminal windows:
-   
-   **Terminal 1 - Backend:**
-   ```bash
-   cd server
-   node server.js
-   # Server runs on http://localhost:3000
-   ```
-   
-   **Terminal 2 - Frontend:**
-   ```bash
-   cd client
-   npm run dev
-   # Client runs on http://localhost:5173
-   ```
+Requires Node.js 18+, a MongoDB database, and (for full functionality) Stripe, Cloudinary and SMTP credentials.
 
----
-
-## File Descriptions
-
-### Backend Key Files
-
-- **`app.js`** - Express application setup, middleware, and route configuration
-- **`server.js`** - Server startup and port configuration
-- **`routes/index.js`** - Aggregates all API routes
-- **`controllers/`** - Business logic for handling requests
-- **`models/`** - Database schemas and data models
-- **`middleware/`** - Custom middleware functions (CORS, auth, error handling)
-
-### Frontend Key Files
-
-- **`App.jsx`** - Main React component with routing
-- **`main.jsx`** - React app entry point
-- **`pages/`** - Full page components
-- **`components/`** - Reusable UI components
-- **`utils/api.js`** - Axios configuration for API calls
-- **`config/constants.js`** - Application constants and API endpoints
-
----
-
-## Git Workflow
-
-### Workflow Steps
-
-1. **Create a new branch**
-   ```bash
-   git checkout -b your-feature-name
-   ```
-
-2. **Make your changes and commit**
-   ```bash
-   git add .
-
-   git commit -m "Add scholarship application form"
-   ```
-
-3. **Push your branch**
-   ```bash
-   git push origin your-feature-name
-   ```
-
-4. **Open a Pull Request on GitHub**
-   - Add a descriptive title
-   - Request for review
-
----
-
-## Linting
-
-Run ESLint before committing:
 ```bash
-cd client
+git clone https://github.com/dennisr7/ZontaNaplesWebsite.git
+cd ZontaNaplesWebsite
 
-npm run lint
+# Backend: http://localhost:3000
+cd backend
+npm install
+cp .env.example .env     # then fill in the values
+node server.js
+
+# Frontend: http://localhost:5173 (in a second terminal)
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
 ```
 
----
+Frontend scripts: `npm run dev`, `npm run build`, `npm run preview`, `npm run lint`.
 
-## Available Scripts
+## Reporting bugs and comments
 
-### Client (Frontend)
-```bash
-npm run dev # Start development server
-npm run build # Build for production
-npm run preview # Preview production build
-npm run lint # Run ESLint
-```
-
-### Server (Backend)
-```bash
-node server.js # Start the server
-npm test # Run tests (when implemented)
-```
-
----
-
-## Useful Links
-
-- [React Documentation](https://react.dev/)
-- [Express Documentation](https://expressjs.com/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/)
-
----
+Please open a [GitHub issue](https://github.com/dennisr7/ZontaNaplesWebsite/issues/new/choose). Issues, pull requests and code comments are accepted **in English**. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-This project is licensed under the MIT License.
+Licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE).
